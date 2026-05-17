@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento Técnico | EduConectRuben</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0A192F;
+            --blue: #00B4D8;
+            --text: #333333;
+            --bg: #f4f7fb;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .btn-descarga {
+            background-color: var(--blue);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-descarga:hover {
+            background-color: #0096C7;
+        }
+        
+        /* Contenedor oficial para exportación PDF */
+        #documento-pdf {
+            background-color: white;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1.6;
+        }
+        h1, h2, h3 { color: var(--navy); }
+        h1 { border-bottom: 4px solid var(--blue); padding-bottom: 10px; text-align: center; font-size: 1.8rem; }
+        h2 { border-bottom: 2px solid #E0E5EC; margin-top: 30px; padding-bottom: 5px; color: var(--blue); font-size: 1.3rem; }
+        h3 { margin-top: 20px; margin-bottom: 5px; font-size: 1.05rem; }
+        ul { margin-bottom: 15px; padding-left: 20px; }
+        li { margin-bottom: 5px; }
+        .header-doc { text-align: center; margin-bottom: 40px; }
+        
+        /* Regla para control estricto de saltos de página en el PDF */
+        .pdf-page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-descarga" onclick="generarPDFDinamico()">
+        <i class="fa-solid fa-file-pdf"></i> Descargar Guía del Nivel Seleccionado
+    </button>
+
+    <div id="documento-pdf">
+        <div class="header-doc">
+            <h1>DOCUMENTO TÉCNICO Y ACADÉMICO</h1>
+            <h3>Suite de Calculadoras | EduConectRuben</h3>
+            <p><strong>Área:</strong> Sistemas Informáticos y Matemáticas Aplicadas<br>
+            <strong>Enfoque:</strong> Práctica, Teoría, Valoración y Producción</p>
+        </div>
+
+        <div id="contenido-academico-modulo">
+            
+            <div id="doc-basic">
+                <h2>NIVEL 1: BÁSICO (Primaria y Uso Cotidiano)</h2>
+                <h3>1. Calculadora Estándar</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Motor aritmético fundamental diseñado para la ejecución y resolución limpia de las cuatro operaciones aritméticas básicas.</li>
+                    <li><strong>¿Cómo se usa?</strong> Interfaz optimizada con control preventivo de cadenas para evitar que el cero inicial corrompa la sintaxis matemática de la expresión.</li>
+                </ul>
+                <h3>2. Calculadora de Porcentajes</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Herramienta de proporcionalidad directa útil para determinar variaciones, incrementos, y descuentos analíticos.</li>
+                    <li><strong>¿Cómo se usa?</strong> Permite conmutar entre calcular el X% de una base o verificar qué porcentaje representa un valor frente a otro.</li>
+                </ul>
+                <h3>3. Calculadora de Fracciones Mixtas</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Procesador algebraico fraccionario que opera de manera simultánea componentes enteros, numeradores y denominadores.</li>
+                    <li><strong>¿Cómo se usa?</strong> Convierte internamente las estructuras mixtas a fracciones impropias y aplica la máxima simplificación mediante el algoritmo del Máximo Común Divisor (MCD).</li>
+                </ul>
+            </div>
+
+            <div id="doc-medium" class="pdf-page-break">
+                <h2>NIVEL 2: MEDIO Y BACHILLERATO (Humanístico y Técnico)</h2>
+                <h3>1. Calculadora Científica Pro</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Incorpora operadores lógicos trascendentales, potencias de base variable, raíces, logaritmos y constantes fundamentales como π y e.</li>
+                    <li><strong>¿Cómo se usa?</strong> Admite el uso de paréntesis complejos y conmutación de medición angular entre grados (DEG) y radianes (RAD). Cuenta con la función SHIFT para la resolución de funciones trigonométricas inversas como el Arccoseno.</li>
+                </ul>
+                <h3>2. Calculadoras de Progresiones</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Resolutor de sucesiones lineales (Aritméticas) y de crecimiento exponencial (Geométricas).</li>
+                    <li><strong>¿Cómo se usa?</strong> Deduce dinámicamente tanto el término general (an) solicitado en una posición específica como la sumatoria acumulada (Sn).</li>
+                </ul>
+                <h3>3. Ecuaciones de Segundo Grado y Pitágoras</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Módulos de despeje algebraico automático para trinomios cuadráticos (fórmula de Bhaskara) y resolución geométrica de triángulos rectángulos.</li>
+                </ul>
+            </div>
+
+            <div id="doc-technical" class="pdf-page-break">
+                <h2>NIVEL 3: TÉCNICO Y PRE-UNIVERSITARIO</h2>
+                <h3>1. Sistemas de Ecuaciones Lineales (Regla de Cramer)</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Solucionador numérico matricial síncrono para sistemas simultáneos de dimensiones 2x2.</li>
+                    <li><strong>¿Cómo se usa?</strong> Procesa las coordenadas de los coeficientes de entrada y aplica determinantes cruzados para verificar la existencia de soluciones únicas.</li>
+                </ul>
+                <h3>2. Estadística Descriptiva</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Procesamiento y ordenamiento computacional de vectores o matrices variables de datos numéricos.</li>
+                    <li><strong>¿Cómo se usa?</strong> Calcula al instante las tres medidas fundamentales de tendencia central: Media aritmética, Mediana estructural y Modas secuenciales.</li>
+                </ul>
+                <h3>3. Vectores en 2D</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Operador vectorial cartesiano para la resolución de magnitudes físicas bidimensionales.</li>
+                    <li><strong>¿Cómo se usa?</strong> Ejecuta sumas geométricas directas componentes en X e Y, y determina la magnitud escalar mediante el Producto Escalar (u · v).</li>
+                </ul>
+            </div>
+
+            <div id="doc-pro" class="pdf-page-break">
+                <h2>NIVEL 4: SUPERIOR Y PROFESIONAL (Ingeniería y Sistemas)</h2>
+                <h3>1. Calculadora de Programador</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Consola de conversión digital simultánea en tiempo real entre los sistemas Decimal, Binario y Hexadecimal.</li>
+                    <li><strong>¿Cómo se usa?</strong> Cuenta con un validador sintáctico por expresiones regulares que restringe caracteres ajenos a la base seleccionada para salvaguardar la estabilidad de la memoria.</li>
+                </ul>
+                <h3>2. Lógica Matemática (Tablas de Verdad e Informática)</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Evaluador lógico proposicional síncrono diseñado para el análisis estructural Booleano de variables lógicas (Verdadero/Falso).</li>
+                    <li><strong>¿Cómo se usa?</strong> Permite examinar sentencias lógicas complejas utilizando conectores formales de Conjunción (∧), Disyunción (∨), Condicional (→) y Bicondicional (↔), imprimiendo la regla analítica computacional aplicada.</li>
+                </ul>
+                <h3>3. Álgebra Matricial Lineal y Finanzas Avanzadas</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Cálculo de determinantes tridimensionales en matrices de 3x3 por la Regla de Sarrus y proyecciones complejas mediante Interés Compuesto exponencial.</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        function generarPDFDinamico() {
+            // 1. Detectar qué nivel está activo en la interfaz de la SPA general de EduConectRuben
+            const selectorNivel = window.parent.document.getElementById('edu-level') || document.getElementById('edu-level');
+            const nivelActivo = selectorNivel ? selectorNivel.value : 'all';
+
+            // 2. Clonar el contenedor principal para manipularlo sin alterar la interfaz física en pantalla
+            const elementoOrigen = document.getElementById('documento-pdf');
+            const elementoClonado = elementoOrigen.cloneNode(true);
+            
+            // 3. Mapear los bloques de niveles definidos en la estructura del HTML
+            const bloques = {
+                'basic': elementoClonado.querySelector('#doc-basic'),
+                'medium': elementoClonado.querySelector('#doc-medium'),
+                'technical': elementoClonado.querySelector('#doc-technical'),
+                'pro': elementoClonado.querySelector('#doc-pro')
+            };
+
+            let nombreArchivo = 'Manual_Completo_EduConectRuben.pdf';
+
+            // 4. Si el usuario se encuentra dentro de un entorno de nivel específico, filtramos los demás
+            if (bloques[nivelActivo]) {
+                nombreArchivo = `Guia_${selectorNivel.options[selectorNivel.selectedIndex].text.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
+                
+                // Quitamos la clase de salto de página del bloque activo para evitar hojas en blanco al inicio del PDF
+                bloques[nivelActivo].classList.remove('pdf-page-break');
+                
+                // Remover por completo los nodos que no pertenecen al nivel seleccionado por el estudiante
+                for (const key in bloques) {
+                    if (key !== nivelActivo && bloques[key]) {
+                        bloques[key].remove();
+                    }
+                }
+            }
+
+            // 5. Parámetros de renderizado y escala de precisión para html2pdf y jsPDF
+            const opciones = {
+                margin:       [12, 15, 12, 15], // Margen limpio estándar: Superior, Izquierda, Inferior, Derecha
+                filename:     nombreArchivo,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // 6. Ejecutar la compilación local del buffer y forzar la descarga del PDF
+            html2pdf().set(opciones).from(elementoClonado).save();
+        }
+    </script>
+</body>
+</html>

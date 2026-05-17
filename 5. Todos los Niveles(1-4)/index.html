@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documento Técnico | EduConectRuben</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --navy: #0A192F;
+            --blue: #00B4D8;
+            --text: #333333;
+            --bg: #f4f7fb;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        .btn-descarga {
+            background-color: var(--blue);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 180, 216, 0.3);
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-descarga:hover {
+            background-color: #0096C7;
+        }
+        
+        /* Contenedor oficial para exportación PDF */
+        #documento-pdf {
+            background-color: white;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            line-height: 1.6;
+        }
+        h1, h2, h3 { color: var(--navy); }
+        h1 { border-bottom: 4px solid var(--blue); padding-bottom: 10px; text-align: center; }
+        h2 { border-bottom: 2px solid #E0E5EC; margin-top: 30px; padding-bottom: 5px; color: var(--blue); }
+        h3 { margin-top: 20px; margin-bottom: 5px; }
+        ul { margin-bottom: 15px; padding-left: 20px; }
+        .header-doc { text-align: center; margin-bottom: 40px; }
+        
+        /* Regla estricta para control de saltos de página en el PDF */
+        .pdf-page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-descarga" onclick="generarPDFDinamico()">
+        <i class="fa-solid fa-file-pdf"></i> Descargar Guía del Nivel Seleccionado
+    </button>
+
+    <div id="documento-pdf">
+        <div class="header-doc">
+            <h1>DOCUMENTO TÉCNICO Y ACADÉMICO</h1>
+            <h3>Suite de Calculadoras | EduConectRuben</h3>
+            <p><strong>Área:</strong> Sistemas Informáticos y Matemáticas Aplicadas<br>
+            <strong>Enfoque:</strong> Práctica, Teoría, Valoración y Producción</p>
+        </div>
+
+        <div id="contenido-academico-modulo">
+            
+            <div id="doc-basic">
+                <h2>NIVEL 1: BÁSICO (Primaria y Uso Cotidiano)</h2>
+                <h3>1. Calculadora Estándar</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Motor aritmético fundamental para resolver sumas, restas, multiplicaciones y divisiones elementales.</li>
+                    <li><strong>¿Cómo se usa?</strong> Interfaz táctil y de teclado físico para agilizar la comprobación de operaciones y el desarrollo del cálculo mental.</li>
+                </ul>
+                <h3>2. Calculadora de Porcentajes</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Herramienta analítica que calcula variaciones de proporcionalidad directa, descuentos y recargos comerciales.</li>
+                </ul>
+                <h3>3. Calculadora de Fracciones Mixtas</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Procesa componentes enteros, numeradores y denominadores mediante algoritmos de reducción automática.</li>
+                </ul>
+            </div>
+
+            <div id="doc-medium" class="pdf-page-break">
+                <h2>NIVEL 2: MEDIO Y BACHILLERATO (Humanístico y Técnico)</h2>
+                <h3>1. Calculadora Científica Básica</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Incorpora operadores avanzados, funciones trigonométricas, logaritmos, raíces y exponentes con respeto estricto a la jerarquía de operaciones.</li>
+                    <li><strong>¿Cómo se usa?</strong> Conmutación angular entre grados (DEG) y radianes (RAD), además de dobles funciones mediante la tecla dorada SHIFT.</li>
+                </ul>
+                <h3>2. Progresiones Aritméticas y Geométricas</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Deducción de términos generales, diferencias, razones y sumatorias de series secuenciales.</li>
+                </ul>
+                <h3>3. Ecuaciones de Segundo Grado y Teorema de Pitágoras</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Resolución de trinomios mediante la fórmula general y análisis de triángulos rectángulos.</li>
+                </ul>
+            </div>
+
+            <div id="doc-technical" class="pdf-page-break">
+                <h2>NIVEL 3: TÉCNICO Y PRE-UNIVERSITARIO</h2>
+                <h3>1. Sistemas de Ecuaciones Lineales (2x2)</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Motor algebraico matricial que resuelve sistemas deterministas aplicando el método estructurado de la Regla de Cramer.</li>
+                </ul>
+                <h3>2. Estadística Descriptiva</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Procesamiento automatizado de conjuntos numéricos para calcular de manera síncrona la Media, Mediana y modas complejas.</li>
+                </ul>
+                <h3>3. Vectores en 2D</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Operaciones fundamentales de magnitudes vectoriales incluyendo sumas algebraicas, restas espaciales y producto escalar.</li>
+                </ul>
+            </div>
+
+            <div id="doc-pro" class="pdf-page-break">
+                <h2>NIVEL 4: SUPERIOR Y PROFESIONAL (Ingeniería y Sistemas)</h2>
+                <h3>1. Calculadora de Programador</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Conversión instantánea y binaria entre sistemas numéricos de cómputo: Decimal, Binario y Hexadecimal con sanitización de buffer por expresiones regulares.</li>
+                </ul>
+                <h3>2. Lógica Matemática (Conectores y Tablas de Verdad)</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Evaluador lógico proposicional de variables Booleanas (V/F) utilizando conectores formales de Conjunción (∧), Disyunción (∨), Condicional (→) y Bicondicional (↔).</li>
+                    <li><strong>¿Cómo se usa?</strong> El sistema procesa los valores de las variables e imprime la salida analítica junto con la regla formal del álgebra de Boole aplicada.</li>
+                </ul>
+                <h3>3. Álgebra Lineal Matricial y Finanzas Pro</h3>
+                <ul>
+                    <li><strong>¿De qué se trata?</strong> Cálculo riguroso de determinantes de matrices de 3x3 a través de la Regla de Sarrus y proyecciones económicas de proyectos mediante interés compuesto exponencial.</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        function generarPDFDinamico() {
+            // 1. Detectar qué nivel está activo en la interfaz de la SPA general de EduConectRuben
+            const selectorNivel = window.parent.document.getElementById('edu-level') || document.getElementById('edu-level');
+            const nivelActivo = selectorNivel ? selectorNivel.value : 'all';
+
+            // 2. Clonar el contenedor para manipularlo sin alterar la vista física en pantalla
+            const elementoOrigen = document.getElementById('documento-pdf');
+            const elementoClonado = elementoOrigen.cloneNode(true);
+            
+            // 3. Mapear los bloques de niveles definidos en el HTML
+            const bloques = {
+                'basic': elementoClonado.querySelector('#doc-basic'),
+                'medium': elementoClonado.querySelector('#doc-medium'),
+                'technical': elementoClonado.querySelector('#doc-technical'),
+                'pro': elementoClonado.querySelector('#doc-pro')
+            };
+
+            let nombreArchivo = 'Manual_Completo_EduConectRuben.pdf';
+
+            // 4. Si el usuario se encuentra en un nivel específico, filtramos los demás bloques
+            if (bloques[nivelActivo]) {
+                nombreArchivo = `Guia_${selectorNivel.options[selectorNivel.selectedIndex].text.replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
+                
+                // Quitamos el salto de página del nivel activo para que no deje hojas en blanco al inicio del PDF
+                bloques[nivelActivo].classList.remove('pdf-page-break');
+                
+                // Remover por completo los bloques de los niveles en los que el usuario no está navegando
+                for (const key in bloques) {
+                    if (key !== nivelActivo && bloques[key]) {
+                        bloques[key].remove();
+                    }
+                }
+            }
+
+            // 5. Configuración del motor de renderizado de la librería html2pdf
+            const opciones = {
+                margin:       [12, 15, 12, 15], // Margen técnico limpio (Superior, Izquierda, Inferior, Derecha)
+                filename:     nombreArchivo,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // 6. Procesar y guardar el documento resultante de forma local
+            html2pdf().set(opciones).from(elementoClonado).save();
+        }
+    </script>
+</body>
+</html>

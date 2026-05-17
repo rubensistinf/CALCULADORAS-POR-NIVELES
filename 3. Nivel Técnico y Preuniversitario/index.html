@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConectRuben | Nivel Técnico y Preuniversitario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* =========================================
+           DISEÑO INSTITUCIONAL EDUCONECTRUBEN
+           ========================================= */
+        :root {
+            --clr-navy: #0A192F;
+            --clr-blue: #00B4D8;
+            --clr-hover: #0096C7;
+            --clr-white: #FFFFFF;
+            --clr-bg: #F4F7FB;
+            --clr-border: #E0E5EC;
+            --shadow: 0 10px 30px rgba(10, 25, 47, 0.08);
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+        body {
+            background-color: var(--clr-bg); color: #333;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 20px;
+        }
+
+        .app-container {
+            background-color: var(--clr-white); width: 100%; max-width: 680px;
+            border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
+            border-top: 6px solid var(--clr-navy);
+        }
+
+        header {
+            background-color: var(--clr-navy); color: var(--clr-white);
+            padding: 20px; text-align: center;
+        }
+        header h1 { color: var(--clr-blue); font-size: 1.6rem; font-family: 'Poppins', sans-serif; }
+        header p { font-size: 0.88rem; opacity: 0.85; margin-top: 2px; }
+
+        /* NAVBAR SPA */
+        .tab-menu { display: flex; background-color: #FAFCFF; border-bottom: 2px solid var(--clr-border); }
+        .tab-btn {
+            flex: 1; padding: 14px; background: none; border: none;
+            border-bottom: 3px solid transparent; font-size: 0.95rem; font-weight: 600;
+            color: var(--clr-navy); cursor: pointer; transition: all 0.2s ease;
+        }
+        .tab-btn:hover { background-color: #F0F4F8; color: var(--clr-blue); }
+        .tab-btn.active { color: var(--clr-blue); border-bottom-color: var(--clr-blue); background-color: var(--clr-white); }
+
+        /* CUERPO CENTRAL */
+        .workspace-content { padding: 25px; }
+        .calc-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .calc-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* FORMULARIOS COMUNES */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--clr-navy); font-size: 0.88rem; }
+        select, input { width: 100%; padding: 11px; border: 2px solid var(--clr-border); border-radius: 8px; font-size: 0.95rem; }
+        select:focus, input:focus { outline: none; border-color: var(--clr-blue); }
+        
+        .fields-split { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .fields-triple { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        
+        .btn-action { 
+            width: 100%; padding: 13px; background-color: var(--clr-blue); 
+            color: var(--clr-white); border: none; border-radius: 8px; 
+            font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.25s; 
+            margin-top: 10px;
+        }
+        .btn-action:hover { background-color: var(--clr-hover); }
+        
+        .result-box { 
+            margin-top: 20px; padding: 15px; background-color: #E8F4F8; 
+            border-left: 5px solid var(--clr-blue); border-radius: 4px; 
+            font-size: 1rem; color: var(--clr-navy); display: none; line-height: 1.5; 
+        }
+
+        /* DISEÑO DE MATRICES LINEALES CRAMER */
+        .matrix-row-container {
+            background-color: #F8FAFC; padding: 15px; border-radius: 8px;
+            border: 1px solid var(--clr-border); margin-bottom: 12px;
+        }
+        .matrix-row-container span { font-weight: bold; color: var(--clr-navy); display: flex; align-items: center; justify-content: center; }
+
+        /* CONTROL DE VECTORES COORDENADAS */
+        .vector-box-ui { background-color: #F8FAFC; padding: 15px; border-radius: 8px; border: 1px solid var(--clr-border); text-align: center; }
+        .vector-box-ui strong { display: block; margin-bottom: 8px; color: var(--clr-navy); }
+    </style>
+</head>
+<body>
+
+    <main class="app-container">
+        <header>
+            <h1>EduConectRuben</h1>
+            <p>Módulo Nivel Técnico: Matrices, Álgebra Vectorial y Estadística</p>
+        </header>
+
+        <nav class="tab-menu">
+            <button class="tab-btn active" onclick="switchTab('tab-cramer', this)"><i class="fa-solid fa-table-cells"></i> Sistema 2x2</button>
+            <button class="tab-btn" onclick="switchTab('tab-stats', this)"><i class="fa-solid fa-chart-simple"></i> Estadística</button>
+            <button class="tab-btn" onclick="switchTab('tab-vectors', this)"><i class="fa-solid fa-arrows-up-down-left-right"></i> Vectores 2D</button>
+        </nav>
+
+        <div class="workspace-content">
+            
+            <section id="tab-cramer" class="calc-section active">
+                <p style="text-align: center; margin-bottom: 15px; font-size: 0.9rem; color: #555;">Estructura de las ecuaciones: <strong>ax + by = c</strong></p>
+                
+                <div class="matrix-row-container">
+                    <label>Ecuación 1:</label>
+                    <div class="matrix-row-container fields-triple" style="padding:0; border:none; background:none;">
+                        <input type="number" id="c-a1" placeholder="a₁" step="any">
+                        <input type="number" id="c-b1" placeholder="b₁" step="any">
+                        <input type="number" id="c-c1" placeholder="c₁" step="any">
+                    </div>
+                </div>
+
+                <div class="matrix-row-container">
+                    <label>Ecuación 2:</label>
+                    <div class="matrix-row-container fields-triple" style="padding:0; border:none; background:none;">
+                        <input type="number" id="c-a2" placeholder="a₂" step="any">
+                        <input type="number" id="c-b2" placeholder="b₂" step="any">
+                        <input type="number" id="c-c2" placeholder="c₂" step="any">
+                    </div>
+                </div>
+
+                <button type="button" class="btn-action" onclick="solveCramer()">Resolver por Cramer</button>
+                <div id="cramer-result" class="result-box"></div>
+            </section>
+
+            <section id="tab-stats" class="calc-section">
+                <div class="form-group">
+                    <label>Introduce el conjunto de datos separados por comas:</label>
+                    <input type="text" id="st-data" placeholder="Ej: 12, 15, 12, 18, 20, 15, 14">
+                </div>
+                <button type="button" class="btn-action" onclick="solveStatistics()">Analizar Conjunto</button>
+                <div id="stats-result" class="result-box"></div>
+            </section>
+
+            <section id="tab-vectors" class="calc-section">
+                <div class="form-group">
+                    <label>Operación a realizar:</label>
+                    <select id="vec-op">
+                        <option value="sum">Suma Vectorial (u + v)</option>
+                        <option value="dot">Producto Escalar (u · v)</option>
+                    </select>
+                </div>
+
+                <div class="fields-split" style="margin-bottom: 15px;">
+                    <div class="vector-box-ui">
+                        <strong>Vector u</strong>
+                        <div class="fields-split">
+                            <input type="number" id="v-ux" placeholder="Componente X" step="any">
+                            <input type="number" id="v-uy" placeholder="Componente Y" step="any">
+                        </div>
+                    </div>
+                    <div class="vector-box-ui">
+                        <strong>Vector v</strong>
+                        <div class="fields-split">
+                            <input type="number" id="v-vx" placeholder="Componente X" step="any">
+                            <input type="number" id="v-vy" placeholder="Componente Y" step="any">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-action" onclick="solveVectors()">Calcular Vector</button>
+                <div id="vectors-result" class="result-box"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        /* ROUTER INTERNO SPA PESTAÑAS */
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        /* =========================================
+           LÓGICA: REGLA DE CRAMER SISTEMAS 2x2
+           ========================================= */
+        function solveCramer() {
+            const a1 = parseFloat(document.getElementById('c-a1').value);
+            const b1 = parseFloat(document.getElementById('c-b1').value);
+            const c1 = parseFloat(document.getElementById('c-c1').value);
+            const a2 = parseFloat(document.getElementById('c-a2').value);
+            const b2 = parseFloat(document.getElementById('c-b2').value);
+            const c2 = parseFloat(document.getElementById('c-c2').value);
+            const resBox = document.getElementById('cramer-result');
+
+            if(isNaN(a1) || isNaN(b1) || isNaN(c1) || isNaN(a2) || isNaN(b2) || isNaN(c2)) {
+                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Llene todos los coeficientes de las matrices lineales.</span>";
+                resBox.style.display = "block"; return;
+            }
+
+            // Determinantes deterministas del sistema
+            const detS = (a1 * b2) - (b1 * a2);
+            const detX = (c1 * b2) - (b1 * c2);
+            const detY = (a1 * c2) - (c1 * a2);
+
+            if (detS === 0) {
+                if (detX === 0 && detY === 0) {
+                    resBox.innerHTML = "El sistema posee <strong>Infinitas Soluciones</strong> (Rectas coincidentes).";
+                } else {
+                    resBox.innerHTML = "El sistema <strong>No tiene solución</strong> (Rectas paralelas en el plano).";
+                }
+            } else {
+                const x = detX / detS;
+                const y = detY / detS;
+                resBox.innerHTML = `
+                    <strong>Solución Analítica por Determinantes:</strong><br><br>
+                    Determinante del Sistema (Δ) = ${detS}<br>
+                    Determinante en X (Δx) = ${detX}<br>
+                    Determinante en Y (Δy) = ${detY}<br><br>
+                    Resultado: <br>
+                    <strong>x = ${Math.round(x * 10000) / 10000}</strong><br>
+                    <strong>y = ${Math.round(y * 10000) / 10000}</strong>
+                `;
+            }
+            resBox.style.display = "block";
+        }
+
+        /* =========================================
+           LÓGICA: ESTADÍSTICA DESCRIPTIVA CENTRAL
+           ========================================= */
+        function solveStatistics() {
+            const rawInput = document.getElementById('st-data').value;
+            const resBox = document.getElementById('stats-result');
+
+            // Limpieza sintáctica del arreglo de entrada
+            const dataArr = rawInput.split(',').map(n => parseFloat(n.trim())).filter(n => !isNaN(n));
+
+            if(dataArr.length === 0) {
+                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Formato de datos vacío o incorrecto (ej: 4, 8, 5, 6).</span>";
+                resBox.style.display = "block"; return;
+            }
+
+            // 1. Cálculo de la Media
+            const mean = dataArr.reduce((a, b) => a + b, 0) / dataArr.length;
+
+            // 2. Cálculo de la Mediana
+            const sorted = [...dataArr].sort((a, b) => a - b);
+            const mid = Math.floor(sorted.length / 2);
+            const median = sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+
+            // 3. Cálculo de la Moda (Soporte Multimodal Completo)
+            const frequency = {};
+            let maxFreq = 0;
+            dataArr.forEach(n => {
+                frequency[n] = (frequency[n] || 0) + 1;
+                if(frequency[n] > maxFreq) maxFreq = frequency[n];
+            });
+
+            let modes = [];
+            for (const key in frequency) {
+                if(frequency[key] === maxFreq) modes.push(key);
+            }
+
+            const modeText = maxFreq === 1 ? "Amodal (No se repite ningún valor)" : modes.join(', ');
+
+            resBox.innerHTML = `
+                <strong>Medidas de Tendencia Central (n = ${dataArr.length}):</strong><br><br>
+                <strong>Media Aritmética (Promedio):</strong> ${Math.round(mean * 10000) / 10000}<br>
+                <strong>Mediana (Centro de distribución):</strong> ${median}<br>
+                <strong>Moda:</strong> ${modeText} <span style="font-size:0.85rem; color:#666;">(Frecuencia: ${maxFreq} veces)</span>
+            `;
+            resBox.style.display = "block";
+        }
+
+        /* =========================================
+           LÓGICA: ALGEBRA VECTORIAL EN 2D
+           ========================================= */
+        function solveVectors() {
+            const op = document.getElementById('vec-op').value;
+            const ux = parseFloat(document.getElementById('v-ux').value);
+            const uy = parseFloat(document.getElementById('v-uy').value);
+            const vx = parseFloat(document.getElementById('v-vx').value);
+            const vy = parseFloat(document.getElementById('v-vy').value);
+            const resBox = document.getElementById('vectors-result');
+
+            if(isNaN(ux) || isNaN(uy) || isNaN(vx) || isNaN(vy)) {
+                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Llene todas las componentes del espacio cartesiano.</span>";
+                resBox.style.display = "block"; return;
+            }
+
+            if (op === 'sum') {
+                resBox.innerHTML = `<strong>Vector Resultante (u + v):</strong><br> R = ( <strong>${ux + vx}</strong> , <strong>${uy + vy}</strong> )`;
+            } else {
+                const dotProduct = (ux * vx) + (uy * vy);
+                resBox.innerHTML = `
+                    <strong>Cálculo del Producto Escalar (u · v):</strong><br>
+                    (u_x × v_x) + (u_y × v_y) = (${ux} × ${vx}) + (${uy} × ${vy})<br>
+                    <strong>Resultado Escalar = ${Math.round(dotProduct * 10000) / 10000}</strong>
+                `;
+            }
+            resBox.style.display = "block";
+        }
+    </script>
+</body>
+</html>

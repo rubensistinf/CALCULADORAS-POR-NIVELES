@@ -3,265 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduConectRuben | Nivel Medio y Bachillerato</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <title>Nivel Medio | EduConectRuben</title>
+    
+    <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* =========================================
-           DISEÑO INSTITUCIONAL EDUCONECTRUBEN
-           ========================================= */
-        :root {
-            --clr-navy: #0A192F;
-            --clr-blue: #00B4D8;
-            --clr-hover: #0096C7;
-            --clr-white: #FFFFFF;
-            --clr-bg: #F4F7FB;
-            --clr-border: #E0E5EC;
-            --shadow: 0 10px 30px rgba(10, 25, 47, 0.08);
-            --radius: 12px;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-
-        body {
-            background-color: var(--clr-bg); color: #333;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 20px;
-        }
-
-        .app-container {
-            background-color: var(--clr-white); width: 100%; max-width: 720px;
-            border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
-            border-top: 6px solid var(--clr-navy);
-        }
-
-        header {
-            background-color: var(--clr-navy); color: var(--clr-white);
-            padding: 20px; text-align: center;
-        }
-        header h1 { color: var(--clr-blue); font-size: 1.6rem; font-family: 'Poppins', sans-serif; }
-        header p { font-size: 0.88rem; opacity: 0.85; margin-top: 2px; }
-
-        /* NAVBAR SPA */
-        .tab-menu { display: flex; background-color: #FAFCFF; border-bottom: 2px solid var(--clr-border); overflow-x: auto; }
-        .tab-btn {
-            flex: 1; padding: 14px 10px; background: none; border: none; min-width: 100px;
-            border-bottom: 3px solid transparent; font-size: 0.9rem; font-weight: 600;
-            color: var(--clr-navy); cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
-        }
-        .tab-btn:hover { background-color: #F0F4F8; color: var(--clr-blue); }
-        .tab-btn.active { color: var(--clr-blue); border-bottom-color: var(--clr-blue); background-color: var(--clr-white); }
-
-        /* CUERPO CENTRAL */
-        .workspace-content { padding: 25px; }
-        .calc-section { display: none; animation: fadeIn 0.3s ease-in-out; }
-        .calc-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* HARDWARE CASIO CIENTÍFICA */
-        .calc-hardware { max-width: 380px; margin: 0 auto; }
-        .calc-display {
-            background-color: var(--clr-navy); color: var(--clr-white);
-            font-size: 2.1rem; text-align: right; padding: 16px;
-            border-radius: 8px; margin-bottom: 12px; word-wrap: break-word; min-height: 80px;
-            font-family: monospace; position: relative;
-        }
-        .shift-indicator { position: absolute; top: 5px; left: 10px; font-size: 0.75rem; color: #FFB703; font-weight: bold; display: none; }
-        .grid-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .app-container { max-width: 900px; margin: 40px auto; padding: 30px; }
         
-        .btn-c {
-            padding: 15px 5px; font-size: 1rem; font-weight: bold; border: none;
-            border-radius: 6px; cursor: pointer; background-color: #F0F4F8; color: var(--clr-navy);
-            position: relative; transition: 0.15s ease;
+        /* Sci Calc Hardware */
+        .calc-hardware {
+            max-width: 400px; margin: 0 auto;
+            background: rgba(10, 25, 47, 0.4); padding: 20px;
+            border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
-        .btn-c:hover { background-color: var(--clr-border); }
-        .btn-c.op { background-color: var(--clr-blue); color: white; }
-        .btn-c.fn { background-color: #E1E8F0; font-size: 0.85rem; padding: 18px 5px 10px 5px; }
-        .btn-c.eq { background-color: var(--clr-navy); color: white; }
-        .btn-c.ac { background-color: #EF233C; color: white; }
-        .btn-c.shift-key { background-color: #FFB703; color: var(--clr-navy); padding: 15px 5px; }
-        .btn-c.shift-key.active { background-color: #FB8500; color: white; }
-        .shift-label { position: absolute; top: 2px; left: 50%; transform: translateX(-50%); font-size: 0.6rem; color: #FB8500; font-weight: bold; pointer-events: none; }
+        .calc-display {
+            background: rgba(0, 0, 0, 0.5); color: var(--clr-accent);
+            font-size: 2rem; text-align: right; padding: 16px 20px;
+            border-radius: 8px; margin-bottom: 20px; word-wrap: break-word; min-height: 85px;
+            font-family: var(--font-mono); border: 1px solid rgba(0, 245, 212, 0.2);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8); position: relative;
+        }
+        .shift-indicator { position: absolute; top: 5px; left: 10px; font-size: 0.8rem; color: var(--clr-warning); display: none; }
+        .grid-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .btn-c {
+            padding: 14px 5px; font-size: 1rem; font-weight: 600; border: none;
+            border-radius: 8px; cursor: pointer; background: rgba(255, 255, 255, 0.1);
+            color: var(--clr-text-main); transition: var(--transition); position: relative;
+        }
+        .btn-c:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.05); }
+        .btn-c:active { transform: scale(0.95); }
+        .btn-c.op { background: rgba(0, 180, 216, 0.2); color: var(--clr-primary); }
+        .btn-c.fn { background: rgba(255, 255, 255, 0.05); font-size: 0.85rem; padding-top: 18px; }
+        .btn-c.eq { background: var(--clr-primary); color: #fff; }
+        .btn-c.ac { background: rgba(239, 35, 60, 0.2); color: var(--clr-danger); }
+        .btn-c.shift-key { background: rgba(255, 183, 3, 0.2); color: var(--clr-warning); }
+        .btn-c.shift-key.active { background: var(--clr-warning); color: #000; }
+        .shift-label { position: absolute; top: 2px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; color: var(--clr-warning); pointer-events: none; }
+        
+        .trig-modes { display: flex; gap: 10px; margin-bottom: 10px; justify-content: center; }
+        .trig-modes span { font-size: 0.8rem; font-weight: bold; padding: 4px 12px; border-radius: 4px; cursor: pointer; background: rgba(255,255,255,0.1); transition: var(--transition); }
+        .trig-modes span.active { background: var(--clr-primary); color: white; }
 
-        .trig-modes { display: flex; gap: 6px; margin-bottom: 8px; justify-content: center; }
-        .trig-modes span { font-size: 0.75rem; font-weight: bold; padding: 4px 10px; border-radius: 4px; cursor: pointer; background: #E0E5EC; color: #666; }
-        .trig-modes span.active { background: var(--clr-blue); color: white; }
-
-        /* FORMULARIOS COMUNES */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--clr-navy); font-size: 0.88rem; }
-        select, input { width: 100%; padding: 11px; border: 2px solid var(--clr-border); border-radius: 8px; font-size: 0.95rem; }
-        select:focus, input:focus { outline: none; border-color: var(--clr-blue); }
-        .fields-split { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .btn-action { width: 100%; padding: 12px; background-color: var(--clr-blue); color: var(--clr-white); border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.25s; }
-        .btn-action:hover { background-color: var(--clr-hover); }
-        .result-box { margin-top: 20px; padding: 15px; background-color: #E8F4F8; border-left: 5px solid var(--clr-blue); border-radius: 4px; font-size: 1rem; color: var(--clr-navy); display: none; line-height: 1.5; }
-        .hidden { display: none !important; }
+        .helper-text { font-size: 0.9rem; color: var(--clr-text-muted); text-align: center; margin-bottom: 20px; }
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <div class="nav-brand"><i class="fa-solid fa-square-root-variable"></i> Nivel 2: Medio y Bachillerato</div>
+        <a href="../index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+    </nav>
 
-    <main class="app-container">
-        <header>
-            <h1>EduConectRuben</h1>
-            <p>Módulo Nivel Medio: Álgebra, Series y Trigonometría</p>
-        </header>
-
-        <nav class="tab-menu">
-            <button class="tab-btn active" onclick="switchTab('tab-sci', this)">Científica</button>
-            <button class="tab-btn" onclick="switchTab('tab-ari', this)">P. Aritmética</button>
-            <button class="tab-btn" onclick="switchTab('tab-geo', this)">P. Geométrica</button>
-            <button class="tab-btn" onclick="switchTab('tab-quad', this)">2do Grado</button>
-            <button class="tab-btn" onclick="switchTab('tab-pyt', this)">Pitágoras</button>
-        </nav>
-
-        <div class="workspace-content">
-            
-            <section id="tab-sci" class="calc-section active">
-                <div class="calc-hardware">
-                    <div class="trig-modes"><span id="mDeg" class="active" onclick="setTrig('DEG')">DEG</span><span id="mRad" onclick="setTrig('RAD')">RAD</span></div>
-                    <div id="hw-display" class="calc-display"><span id="shift-ind" class="shift-indicator">SHIFT</span>0</div>
-                    <div class="grid-buttons">
-                        <button type="button" id="btn-shift" class="btn-c shift-key" onclick="toggleShift()">SHIFT</button>
-                        <button type="button" class="btn-c fn" onclick="triggerTrig('sin')"><span class="shift-label">asin</span>sin</button>
-                        <button type="button" class="btn-c fn" onclick="triggerTrig('cos')"><span class="shift-label">acos</span>cos</button>
-                        <button type="button" class="btn-c fn" onclick="triggerTrig('tan')"><span class="shift-label">atan</span>tan</button>
-                        <button type="button" class="btn-c fn" onclick="appendSci('√(')"><span class="shift-label">x²</span>√</button>
-                        
-                        <button type="button" class="btn-c fn" onclick="appendSci('log(')">log</button>
-                        <button type="button" class="btn-c fn" onclick="appendSci('(')">(</button>
-                        <button type="button" class="btn-c fn" onclick="appendSci(')')">)</button>
-                        <button type="button" class="btn-c fn" onclick="appendSci('^')">xʸ</button>
-                        <button type="button" class="btn-c fn" onclick="appendSci('π')">π</button>
-
-                        <button type="button" class="btn-c" onclick="appendSci('7')">7</button>
-                        <button type="button" class="btn-c" onclick="appendSci('8')">8</button>
-                        <button type="button" class="btn-c" onclick="appendSci('9')">9</button>
-                        <button type="button" class="btn-c ac" onclick="clearSci()" style="grid-column: span 2;">AC</button>
-                        
-                        <button type="button" class="btn-c" onclick="appendSci('4')">4</button>
-                        <button type="button" class="btn-c" onclick="appendSci('5')">5</button>
-                        <button type="button" class="btn-c" onclick="appendSci('6')">6</button>
-                        <button type="button" class="btn-c op" onclick="appendSci('*')">×</button>
-                        <button type="button" class="btn-c op" onclick="appendSci('/')">÷</button>
-                        
-                        <button type="button" class="btn-c" onclick="appendSci('1')">1</button>
-                        <button type="button" class="btn-c" onclick="appendSci('2')">2</button>
-                        <button type="button" class="btn-c" onclick="appendSci('3')">3</button>
-                        <button type="button" class="btn-c op" onclick="appendSci('+')">+</button>
-                        <button type="button" class="btn-c op" onclick="appendSci('-')">−</button>
-                        
-                        <button type="button" class="btn-c" onclick="appendSci('0')" style="grid-column: span 2;">0</button>
-                        <button type="button" class="btn-c" onclick="appendSci('.')">.</button>
-                        <button type="button" class="btn-c eq" onclick="evalSci()" style="grid-column: span 2;">=</button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-ari" class="calc-section">
-                <div class="form-group"><label>Incógnita a despejar:</label><select id="a-op"><option value="an">Último término (an)</option><option value="sn">Suma total (Sn)</option></select></div>
-                <div class="fields-split">
-                    <div class="form-group"><label>Primer término (a1):</label><input type="number" id="a-a1" step="any"></div>
-                    <div class="form-group"><label>Diferencia (d):</label><input type="number" id="a-d" step="any"></div>
-                </div>
-                <div class="form-group"><label>Número de términos (n):</label><input type="number" id="a-n" step="any"></div>
-                <button type="button" class="btn-action" onclick="solveArithmetic()">Calcular Progresión</button>
-                <div id="ari-result" class="result-box"></div>
-            </section>
-
-            <section id="tab-geo" class="calc-section">
-                <div class="form-group"><label>Incógnita a despejar:</label><select id="g-op"><option value="an">Último término (an)</option><option value="sn">Suma total (Sn)</option></select></div>
-                <div class="fields-split">
-                    <div class="form-group"><label>Primer término (a1):</label><input type="number" id="g-a1" step="any"></div>
-                    <div class="form-group"><label>Razón común (r):</label><input type="number" id="g-r" step="any"></div>
-                </div>
-                <div class="form-group"><label>Número de términos (n):</label><input type="number" id="g-n" step="any"></div>
-                <button type="button" class="btn-action" onclick="solveGeometric()">Calcular Progresión</button>
-                <div id="geo-result" class="result-box"></div>
-            </section>
-
-            <section id="tab-quad" class="calc-section">
-                <p style="text-align:center; margin-bottom:15px; font-weight:bold;">Estructura: ax² + bx + c = 0</p>
-                <div class="fields-split">
-                    <div class="form-group"><label>Coeficiente a:</label><input type="number" id="q-a" step="any"></div>
-                    <div class="form-group"><label>Coeficiente b:</label><input type="number" id="q-b" step="any"></div>
-                </div>
-                <div class="form-group"><label>Coeficiente c:</label><input type="number" id="q-c" step="any"></div>
-                <button type="button" class="btn-action" onclick="solveQuadratic()">Resolver Ecuación</button>
-                <div id="quad-result" class="result-box"></div>
-            </section>
-
-            <section id="tab-pyt" class="calc-section">
-                <div class="form-group"><label>Variable Desconocida:</label><select id="py-op" onchange="togglePythUI()"><option value="c">Hipotenusa (c)</option><option value="a">Cateto (a)</option></select></div>
-                <div class="fields-split">
-                    <div class="form-group" id="box-pya"><label>Cateto a:</label><input type="number" id="py-a" step="any"></div>
-                    <div class="form-group" id="box-pyb"><label>Cateto b:</label><input type="number" id="py-b" step="any"></div>
-                    <div class="form-group hidden" id="box-pyc"><label>Hipotenusa c:</label><input type="number" id="py-c" step="any"></div>
-                </div>
-                <button type="button" class="btn-action" onclick="solvePythagoras()">Calcular Lado</button>
-                <div id="pyt-result" class="result-box"></div>
-            </section>
-
+    <main class="app-container glass-panel">
+        <div class="tabs-container">
+            <button class="tab-btn active" data-target="tab-sci">Científica</button>
+            <button class="tab-btn" data-target="tab-ari">Prog. Aritmética</button>
+            <button class="tab-btn" data-target="tab-geo">Prog. Geométrica</button>
+            <button class="tab-btn" data-target="tab-quad">Ecuación 2do Grado</button>
+            <button class="tab-btn" data-target="tab-pyt">Pitágoras</button>
         </div>
+
+        <!-- Científica -->
+        <section id="tab-sci" class="tab-content active">
+            <div class="calc-hardware">
+                <div class="trig-modes"><span id="mDeg" class="active" onclick="setTrig('DEG')">DEG</span><span id="mRad" onclick="setTrig('RAD')">RAD</span></div>
+                <div id="hw-display" class="calc-display"><span id="shift-ind" class="shift-indicator">SHIFT</span>0</div>
+                <div class="grid-buttons">
+                    <button type="button" id="btn-shift" class="btn-c shift-key" onclick="toggleShift()">SHIFT</button>
+                    <button type="button" class="btn-c fn" onclick="triggerTrig('sin')"><span class="shift-label">asin</span>sin</button>
+                    <button type="button" class="btn-c fn" onclick="triggerTrig('cos')"><span class="shift-label">acos</span>cos</button>
+                    <button type="button" class="btn-c fn" onclick="triggerTrig('tan')"><span class="shift-label">atan</span>tan</button>
+                    <button type="button" class="btn-c fn" onclick="appendSci('√(')"><span class="shift-label">x²</span>√</button>
+                    
+                    <button type="button" class="btn-c fn" onclick="appendSci('log(')">log</button>
+                    <button type="button" class="btn-c fn" onclick="appendSci('(')">(</button>
+                    <button type="button" class="btn-c fn" onclick="appendSci(')')">)</button>
+                    <button type="button" class="btn-c fn" onclick="appendSci('^')">xʸ</button>
+                    <button type="button" class="btn-c fn" onclick="appendSci('π')">π</button>
+
+                    <button type="button" class="btn-c" onclick="appendSci('7')">7</button>
+                    <button type="button" class="btn-c" onclick="appendSci('8')">8</button>
+                    <button type="button" class="btn-c" onclick="appendSci('9')">9</button>
+                    <button type="button" class="btn-c ac" onclick="clearSci()" style="grid-column: span 2;">AC</button>
+                    
+                    <button type="button" class="btn-c" onclick="appendSci('4')">4</button>
+                    <button type="button" class="btn-c" onclick="appendSci('5')">5</button>
+                    <button type="button" class="btn-c" onclick="appendSci('6')">6</button>
+                    <button type="button" class="btn-c op" onclick="appendSci('*')">×</button>
+                    <button type="button" class="btn-c op" onclick="appendSci('/')">÷</button>
+                    
+                    <button type="button" class="btn-c" onclick="appendSci('1')">1</button>
+                    <button type="button" class="btn-c" onclick="appendSci('2')">2</button>
+                    <button type="button" class="btn-c" onclick="appendSci('3')">3</button>
+                    <button type="button" class="btn-c op" onclick="appendSci('+')">+</button>
+                    <button type="button" class="btn-c op" onclick="appendSci('-')">−</button>
+                    
+                    <button type="button" class="btn-c" onclick="appendSci('0')" style="grid-column: span 2;">0</button>
+                    <button type="button" class="btn-c" onclick="appendSci('.')">.</button>
+                    <button type="button" class="btn-c eq" onclick="evalSci()" style="grid-column: span 2;">=</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progresión Aritmética (Multifuncional) -->
+        <section id="tab-ari" class="tab-content">
+            <p class="helper-text"><i class="fa-solid fa-circle-info"></i> Introduce los datos que conozcas (al menos 3). Deja en blanco los que desees calcular.</p>
+            <div class="grid-2">
+                <div class="input-group"><label>Primer Término (a₁):</label><input type="number" id="ari-a1" class="input-field" step="any"></div>
+                <div class="input-group"><label>Diferencia (d):</label><input type="number" id="ari-d" class="input-field" step="any"></div>
+                <div class="input-group"><label>Cantidad de Términos (n):</label><input type="number" id="ari-n" class="input-field" step="any"></div>
+                <div class="input-group"><label>Último Término (aₙ):</label><input type="number" id="ari-an" class="input-field" step="any"></div>
+                <div class="input-group"><label>Suma Total (Sₙ):</label><input type="number" id="ari-sn" class="input-field" step="any"></div>
+            </div>
+            <button class="btn-primary" onclick="solveMultiArit()"><i class="fa-solid fa-bolt"></i> Calcular Incógnitas</button>
+            <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearInputs('ari')">Limpiar Datos</button>
+            <div id="ari-result"></div>
+        </section>
+
+        <!-- Progresión Geométrica (Multifuncional) -->
+        <section id="tab-geo" class="tab-content">
+            <p class="helper-text"><i class="fa-solid fa-circle-info"></i> Introduce al menos 3 datos conocidos. Deja en blanco los que desees calcular.</p>
+            <div class="grid-2">
+                <div class="input-group"><label>Primer Término (a₁):</label><input type="number" id="geo-a1" class="input-field" step="any"></div>
+                <div class="input-group"><label>Razón (r):</label><input type="number" id="geo-r" class="input-field" step="any"></div>
+                <div class="input-group"><label>Cantidad de Términos (n):</label><input type="number" id="geo-n" class="input-field" step="any"></div>
+                <div class="input-group"><label>Último Término (aₙ):</label><input type="number" id="geo-an" class="input-field" step="any"></div>
+                <div class="input-group"><label>Suma Total (Sₙ):</label><input type="number" id="geo-sn" class="input-field" step="any"></div>
+            </div>
+            <button class="btn-primary" onclick="solveMultiGeo()"><i class="fa-solid fa-bolt"></i> Calcular Incógnitas</button>
+            <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearInputs('geo')">Limpiar Datos</button>
+            <div id="geo-result"></div>
+        </section>
+
+        <!-- Ecuación Cuadrática -->
+        <section id="tab-quad" class="tab-content">
+            <p class="helper-text">Estructura: <strong>ax² + bx + c = 0</strong></p>
+            <div class="grid-2">
+                <div class="input-group"><label>Coeficiente a:</label><input type="number" id="q-a" class="input-field" step="any"></div>
+                <div class="input-group"><label>Coeficiente b:</label><input type="number" id="q-b" class="input-field" step="any"></div>
+                <div class="input-group"><label>Coeficiente c:</label><input type="number" id="q-c" class="input-field" step="any"></div>
+            </div>
+            <button class="btn-primary" onclick="solveQuadratic()"><i class="fa-solid fa-bolt"></i> Resolver Ecuación</button>
+            <div id="quad-result"></div>
+        </section>
+
+        <!-- Pitágoras -->
+        <section id="tab-pyt" class="tab-content">
+            <p class="helper-text">Deja en blanco el lado que deseas calcular (a² + b² = c²)</p>
+            <div class="grid-2">
+                <div class="input-group"><label>Cateto (a):</label><input type="number" id="py-a" class="input-field" step="any"></div>
+                <div class="input-group"><label>Cateto (b):</label><input type="number" id="py-b" class="input-field" step="any"></div>
+                <div class="input-group"><label>Hipotenusa (c):</label><input type="number" id="py-c" class="input-field" step="any"></div>
+            </div>
+            <button class="btn-primary" onclick="solvePythagoras()"><i class="fa-solid fa-bolt"></i> Calcular Lado</button>
+            <div id="pyt-result"></div>
+        </section>
+
     </main>
 
+    <script src="../assets/js/global.js"></script>
     <script>
-        /* SPA ROUTER COMPONENT */
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        /* =========================================
-           LÓGICA: CALCULADORA CIENTÍFICA PRO
-           ========================================= */
-        let sciBuffer = "0";
-        let shiftActive = false;
-        let trigMode = "DEG";
-
+        // --- Calculadora Científica ---
+        let sciBuffer = "0"; let shiftActive = false; let trigMode = "DEG";
         function toggleShift() {
             shiftActive = !shiftActive;
             document.getElementById('btn-shift').classList.toggle('active', shiftActive);
             document.getElementById('shift-ind').style.display = shiftActive ? 'block' : 'none';
         }
-
         function setTrig(mode) {
             trigMode = mode;
             document.getElementById('mDeg').className = mode === 'DEG' ? 'active' : '';
             document.getElementById('mRad').className = mode === 'RAD' ? 'active' : '';
         }
-
         function appendSci(val) {
             const display = document.getElementById('hw-display');
             if (sciBuffer === "0" && val !== "." && !isNaN(val)) sciBuffer = "";
             if (sciBuffer === "0" && (val === "sin(" || val === "cos(" || val === "tan(" || val === "π" || val === "(")) sciBuffer = "";
-            sciBuffer += val;
-            display.innerText = sciBuffer;
+            sciBuffer += val; display.innerText = sciBuffer;
         }
-
         function triggerTrig(baseFunc) {
             const finalFunc = shiftActive ? 'a' + baseFunc : baseFunc;
             appendSci(finalFunc + '(');
             if(shiftActive) toggleShift();
         }
-
         function clearSci() {
-            sciBuffer = "0";
-            document.getElementById('hw-display').innerText = sciBuffer;
+            sciBuffer = "0"; document.getElementById('hw-display').innerText = sciBuffer;
             if(shiftActive) toggleShift();
         }
-
         function evalSci() {
             const display = document.getElementById('hw-display');
             try {
                 let expr = sciBuffer;
                 const rFactor = trigMode === 'DEG' ? '(Math.PI/180)' : '1';
                 const invFactor = trigMode === 'DEG' ? '(180/Math.PI)*' : '';
-
                 expr = expr.replace(/acos\(/g, `${invFactor}Math.acos(焦虑`)
                            .replace(/asin\(/g, `${invFactor}Math.asin(`)
                            .replace(/atan\(/g, `${invFactor}Math.atan(`)
@@ -274,98 +209,179 @@
                            .replace(/\^/g, '**')
                            .replace(/π/g, 'Math.PI')
                            .replace(/e/g, 'Math.E');
-
                 let result = new Function('return ' + expr)();
                 if(isNaN(result) || !isFinite(result)) throw "Error";
                 result = Math.round(result * 1000000) / 1000000;
-                sciBuffer = result.toString();
-                display.innerText = sciBuffer;
-            } catch (err) {
-                display.innerText = "Error Sintaxis";
-                sciBuffer = "0";
+                sciBuffer = result.toString(); display.innerText = sciBuffer;
+            } catch (err) { display.innerText = "Error"; sciBuffer = "0"; }
+        }
+
+        // --- Util ---
+        function clearInputs(prefix) {
+            ['a1', 'd', 'r', 'n', 'an', 'sn'].forEach(id => {
+                const el = document.getElementById(`${prefix}-${id}`);
+                if (el) el.value = '';
+            });
+            hideResult(`${prefix}-result`);
+        }
+        function getVal(id) {
+            const val = document.getElementById(id).value;
+            return val === "" ? null : parseFloat(val);
+        }
+
+        // --- Progresión Aritmética Multifuncional ---
+        function solveMultiArit() {
+            let a1 = getVal('ari-a1');
+            let d = getVal('ari-d');
+            let n = getVal('ari-n');
+            let an = getVal('ari-an');
+            let sn = getVal('ari-sn');
+
+            const givenCount = [a1, d, n, an, sn].filter(v => v !== null).length;
+            if (givenCount < 3) {
+                showResult('ari-result', '<strong>Error:</strong> Introduce al menos 3 valores conocidos.', 'error');
+                return;
+            }
+
+            try {
+                // Brute force / algebraic isolation for missing variables
+                let solved = true;
+                while (solved) {
+                    solved = false;
+                    
+                    if (an === null && a1 !== null && n !== null && d !== null) { an = a1 + (n - 1) * d; solved = true; }
+                    if (sn === null && n !== null && a1 !== null && an !== null) { sn = (n / 2) * (a1 + an); solved = true; }
+                    if (a1 === null && an !== null && n !== null && d !== null) { a1 = an - (n - 1) * d; solved = true; }
+                    if (d === null && an !== null && a1 !== null && n !== null && n !== 1) { d = (an - a1) / (n - 1); solved = true; }
+                    
+                    // Complex deductions
+                    if (a1 === null && sn !== null && n !== null && an !== null) { a1 = (2 * sn / n) - an; solved = true; }
+                    if (an === null && sn !== null && n !== null && a1 !== null) { an = (2 * sn / n) - a1; solved = true; }
+                    if (n === null && sn !== null && a1 !== null && an !== null && (a1+an)!==0) { n = (2 * sn) / (a1 + an); solved = true; }
+                    
+                    // Using d and Sn
+                    if (sn === null && a1 !== null && d !== null && n !== null) { sn = (n / 2) * (2 * a1 + (n - 1) * d); solved = true; }
+                    if (a1 === null && sn !== null && d !== null && n !== null) { a1 = (sn / n) - (d * (n - 1) / 2); solved = true; }
+                    if (d === null && sn !== null && a1 !== null && n !== null && n !== 1) { d = (2 * (sn - n * a1)) / (n * (n - 1)); solved = true; }
+                    
+                    // Finding n with quadratic (Sn, a1, d)
+                    if (n === null && sn !== null && a1 !== null && d !== null && d !== 0) {
+                        // d/2 * n^2 + (a1 - d/2) * n - Sn = 0
+                        const A = d / 2;
+                        const B = a1 - d / 2;
+                        const C = -sn;
+                        const disc = B * B - 4 * A * C;
+                        if (disc >= 0) {
+                            const n1 = (-B + Math.sqrt(disc)) / (2 * A);
+                            const n2 = (-B - Math.sqrt(disc)) / (2 * A);
+                            n = (n1 > 0 && Number.isInteger(n1)) ? n1 : (n2 > 0 && Number.isInteger(n2)) ? n2 : n;
+                            solved = true;
+                        }
+                    }
+                }
+
+                if (a1 === null || d === null || n === null || an === null || sn === null) {
+                    showResult('ari-result', '<strong>Error:</strong> Los datos proporcionados son insuficientes o matemáticamente inconsistentes.', 'error');
+                    return;
+                }
+
+                // Fill inputs to show user
+                document.getElementById('ari-a1').value = +a1.toFixed(4);
+                document.getElementById('ari-d').value = +d.toFixed(4);
+                document.getElementById('ari-n').value = +n.toFixed(4);
+                document.getElementById('ari-an').value = +an.toFixed(4);
+                document.getElementById('ari-sn').value = +sn.toFixed(4);
+
+                showResult('ari-result', '<strong>¡Éxito!</strong> Variables calculadas y rellenadas.', 'success');
+            } catch (e) {
+                showResult('ari-result', '<strong>Error de Cálculo.</strong> Verifica los datos ingresados.', 'error');
             }
         }
 
-        /* =========================================
-           LÓGICA: PROGRESIONES ARITMÉTICAS
-           ========================================= */
-        function solveArithmetic() {
-            const op = document.getElementById('a-op').value;
-            const a1 = parseFloat(document.getElementById('a-a1').value);
-            const d = parseFloat(document.getElementById('a-d').value);
-            const n = parseFloat(document.getElementById('a-n').value);
-            const resBox = document.getElementById('ari-result');
+        // --- Progresión Geométrica Multifuncional ---
+        function solveMultiGeo() {
+            let a1 = getVal('geo-a1');
+            let r = getVal('geo-r');
+            let n = getVal('geo-n');
+            let an = getVal('geo-an');
+            let sn = getVal('geo-sn');
 
-            if(isNaN(a1) || !Number.isInteger(n) || n <= 0 || isNaN(d)) {
-                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Parámetros de la sucesión incorrectos.</span>";
-                resBox.style.display = "block"; return;
+            const givenCount = [a1, r, n, an, sn].filter(v => v !== null).length;
+            if (givenCount < 3) {
+                showResult('geo-result', '<strong>Error:</strong> Introduce al menos 3 valores conocidos.', 'error');
+                return;
             }
-            let an = a1 + (n - 1) * d;
-            resBox.innerHTML = op === 'an' ? `Término General aₙ (n=${n}): <strong>${an}</strong>` : `Suma Total de Términos Sₙ: <strong>${(n * (a1 + an)) / 2}</strong>`;
-            resBox.style.display = "block";
+
+            try {
+                let solved = true;
+                while(solved) {
+                    solved = false;
+                    
+                    if (an === null && a1 !== null && r !== null && n !== null) { an = a1 * Math.pow(r, n - 1); solved = true; }
+                    if (sn === null && a1 !== null && r !== null && n !== null) { sn = r === 1 ? a1 * n : a1 * (Math.pow(r, n) - 1) / (r - 1); solved = true; }
+                    if (a1 === null && an !== null && r !== null && n !== null && r !== 0) { a1 = an / Math.pow(r, n - 1); solved = true; }
+                    if (r === null && an !== null && a1 !== null && n !== null && a1 !== 0) { r = Math.pow(an / a1, 1 / (n - 1)); solved = true; }
+                    if (n === null && an !== null && a1 !== null && r !== null && a1 !== 0 && r > 0 && r !== 1) { n = Math.log(an / a1) / Math.log(r) + 1; solved = true; }
+                    
+                    // Sn based
+                    if (a1 === null && sn !== null && r !== null && n !== null) { a1 = r === 1 ? sn / n : sn * (r - 1) / (Math.pow(r, n) - 1); solved = true; }
+                    if (sn === null && a1 !== null && r !== null && an !== null && r !== 1) { sn = (an * r - a1) / (r - 1); solved = true; }
+                }
+
+                if (a1 === null || r === null || n === null || an === null || sn === null || isNaN(a1) || isNaN(r)) {
+                    showResult('geo-result', '<strong>Error:</strong> Los datos proporcionados son insuficientes o generan resultados complejos/inconsistentes.', 'error');
+                    return;
+                }
+
+                document.getElementById('geo-a1').value = +a1.toFixed(4);
+                document.getElementById('geo-r').value = +r.toFixed(4);
+                document.getElementById('geo-n').value = +n.toFixed(4);
+                document.getElementById('geo-an').value = +an.toFixed(4);
+                document.getElementById('geo-sn').value = +sn.toFixed(4);
+
+                showResult('geo-result', '<strong>¡Éxito!</strong> Variables calculadas y rellenadas.', 'success');
+            } catch (e) {
+                showResult('geo-result', '<strong>Error de Cálculo.</strong>', 'error');
+            }
         }
 
-        /* =========================================
-           LÓGICA: PROGRESIONES GEOMÉTRICAS
-           ========================================= */
-        function solveGeometric() {
-            const op = document.getElementById('g-op').value;
-            const a1 = parseFloat(document.getElementById('g-a1').value);
-            const r = parseFloat(document.getElementById('g-r').value);
-            const n = parseFloat(document.getElementById('g-n').value);
-            const resBox = document.getElementById('geo-result');
-
-            if(isNaN(a1) || !Number.isInteger(n) || n <= 0 || isNaN(r)) {
-                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Parámetros incorrectos.</span>";
-                resBox.style.display = "block"; return;
-            }
-            let an = a1 * Math.pow(r, n - 1);
-            resBox.innerHTML = op === 'an' ? `Término General aₙ (n=${n}): <strong>${an}</strong>` : `Suma Total Sₙ: <strong>${r === 1 ? a1 * n : (a1 * (Math.pow(r, n) - 1)) / (r - 1)}</strong>`;
-            resBox.style.display = "block";
-        }
-
-        /* =========================================
-           LÓGICA: ECUACIONES DE 2DO GRADO
-           ========================================= */
+        // --- Cuadrática ---
         function solveQuadratic() {
-            const a = parseFloat(document.getElementById('q-a').value);
-            const b = parseFloat(document.getElementById('q-b').value);
-            const c = parseFloat(document.getElementById('q-c').value);
-            const resBox = document.getElementById('quad-result');
-
-            if(isNaN(a) || isNaN(b) || isNaN(c) || a === 0) {
-                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> El coeficiente 'a' no puede ser 0.</span>";
-                resBox.style.display = "block"; return;
+            const a = getVal('q-a'); const b = getVal('q-b'); const c = getVal('q-c');
+            if(a === null || b === null || c === null || a === 0) {
+                showResult('quad-result', '<strong>Error:</strong> Ingresa a, b, c. "a" no puede ser 0.', 'error'); return;
             }
             const disc = (b * b) - (4 * a * c);
-            if(disc < 0) resText = "La ecuación no posee raíces reales (Discriminante < 0).";
-            else resText = `x₁ = <strong>${(-b + Math.sqrt(disc)) / (2 * a)}</strong><br>x₂ = <strong>${(-b - Math.sqrt(disc)) / (2 * a)}</strong>`;
-            resBox.innerHTML = resText; resBox.style.display = "block";
+            if(disc < 0) {
+                showResult('quad-result', "La ecuación tiene raíces complejas.", 'warning');
+            } else {
+                const x1 = (-b + Math.sqrt(disc)) / (2 * a);
+                const x2 = (-b - Math.sqrt(disc)) / (2 * a);
+                showResult('quad-result', `x₁ = <strong>${x1.toFixed(4)}</strong><br>x₂ = <strong>${x2.toFixed(4)}</strong>`, 'success');
+            }
         }
 
-        /* =========================================
-           LÓGICA: TEOREMA DE PITÁGORAS
-           ========================================= */
-        function togglePythUI() {
-            const op = document.getElementById('py-op').value;
-            document.getElementById('box-pya').classList.toggle('hidden', op === 'a');
-            document.getElementById('box-pyc').classList.toggle('hidden', op === 'c');
-        }
+        // --- Pitágoras ---
         function solvePythagoras() {
-            const op = document.getElementById('py-op').value;
-            const resBox = document.getElementById('pyt-result');
-            if(op === 'c') {
-                const a = parseFloat(document.getElementById('py-a').value);
-                const b = parseFloat(document.getElementById('py-b').value);
-                if(isNaN(a) || isNaN(b) || a <= 0 || b <= 0) { resBox.innerHTML = "Lados inválidos."; resBox.style.display="block"; return; }
-                resBox.innerHTML = `Hipotenusa (c) = <strong>${Math.sqrt(a*a + b*b).toFixed(4)}</strong>`;
-            } else {
-                const b = parseFloat(document.getElementById('py-b').value);
-                const c = parseFloat(document.getElementById('py-c').value);
-                if(isNaN(b) || isNaN(c) || b <= 0 || c <= 0 || b >= c) { resBox.innerHTML = "Hipotenusa debe ser mayor al cateto."; resBox.style.display="block"; return; }
-                resBox.innerHTML = `Cateto (a) = <strong>${Math.sqrt(c*c - b*b).toFixed(4)}</strong>`;
+            let a = getVal('py-a'); let b = getVal('py-b'); let c = getVal('py-c');
+            const givenCount = [a, b, c].filter(v => v !== null).length;
+            if (givenCount !== 2) {
+                showResult('pyt-result', '<strong>Error:</strong> Introduce exactamente 2 lados.', 'error'); return;
             }
-            resBox.style.display = "block";
+
+            if (c === null) {
+                c = Math.sqrt(a*a + b*b);
+                document.getElementById('py-c').value = +c.toFixed(4);
+            } else if (a === null) {
+                if (b >= c) { showResult('pyt-result', 'Hipotenusa (c) debe ser mayor que el cateto (b).', 'error'); return; }
+                a = Math.sqrt(c*c - b*b);
+                document.getElementById('py-a').value = +a.toFixed(4);
+            } else if (b === null) {
+                if (a >= c) { showResult('pyt-result', 'Hipotenusa (c) debe ser mayor que el cateto (a).', 'error'); return; }
+                b = Math.sqrt(c*c - a*a);
+                document.getElementById('py-b').value = +b.toFixed(4);
+            }
+            showResult('pyt-result', '<strong>¡Éxito!</strong> Lado calculado.', 'success');
         }
     </script>
 </body>

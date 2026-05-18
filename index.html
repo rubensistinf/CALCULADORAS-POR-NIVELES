@@ -3,185 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduConectRuben | Hub Maestro</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <title>EduConectRuben | Hub de Calculadoras Pro</title>
+    
+    <!-- Global Assets -->
+    <link rel="stylesheet" href="assets/css/global.css">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* =========================================
-           DISEÑO DE PORTAL MAESTRO EDUCONECTRUBEN
-           ========================================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            background-color: #f1f5f9;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: 'Lato', sans-serif;
-            padding: 40px 20px;
-        }
-
-        .header-portal {
+        /* Specific styles for Main Portal */
+        .hero-section {
             text-align: center;
-            margin-bottom: 40px;
+            margin-top: 5vh;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
         }
 
-        .header-portal h1 {
-            font-family: 'Poppins', sans-serif;
-            color: #0A192F;
-            font-size: 46px;
-            font-weight: 700;
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF, var(--clr-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 40px rgba(0, 180, 216, 0.4);
         }
 
-        .header-portal p {
-            color: #00B4D8;
-            font-size: 16px;
-            font-weight: 700;
-            text-transform: uppercase;
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--clr-text-muted);
             letter-spacing: 2px;
-            margin-top: 5px;
+            text-transform: uppercase;
         }
 
-        /* GRID DE CUADRITOS SIMÉTRICOS PRO (3 COLUMNAS) */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(3, 340px);
-            gap: 25px;
-            justify-content: center;
-            max-width: 1100px;
-            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            padding-bottom: 100px; /* Space for floating button */
         }
 
         .calc-tile {
-            background-color: #FFFFFF;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(10, 25, 47, 0.05);
+            position: relative;
+            padding: 40px 30px;
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            padding: 40px 25px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #e2e8f0;
-            text-align: center;
-            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             overflow: hidden;
+            border-top: 4px solid transparent;
         }
 
         .calc-tile:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 180, 216, 0.15);
-            border-color: #00B4D8;
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-top-color: var(--clr-primary);
+        }
+        
+        .calc-tile.accent-alt:hover {
+            border-top-color: var(--clr-accent);
+        }
+        
+        .calc-tile.accent-danger:hover {
+            border-top-color: var(--clr-danger);
         }
 
-        .calc-tile .icon-wrapper {
-            width: 70px;
-            height: 70px;
-            background-color: #f8fafc;
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 20px;
-            transition: all 0.25s ease;
+            transition: all 0.4s ease;
+            box-shadow: inset 0 0 20px rgba(0, 180, 216, 0.1);
         }
 
         .calc-tile:hover .icon-wrapper {
-            background-color: #00B4D8;
+            background: rgba(0, 180, 216, 0.2);
+            transform: rotateY(180deg);
+        }
+        
+        .calc-tile.accent-alt:hover .icon-wrapper {
+            background: rgba(0, 245, 212, 0.2);
+        }
+
+        .calc-tile.accent-danger:hover .icon-wrapper {
+            background: rgba(239, 35, 60, 0.2);
         }
 
         .calc-tile i {
-            font-size: 30px;
-            color: #0A192F;
-            transition: all 0.25s ease;
+            font-size: 36px;
+            color: var(--clr-primary);
+            transition: all 0.4s ease;
         }
 
+        .calc-tile.accent-alt i { color: var(--clr-accent); }
+        .calc-tile.accent-danger i { color: var(--clr-danger); }
+
         .calc-tile:hover i {
-            color: #FFFFFF;
+            color: #FFF;
         }
 
         .calc-tile h3 {
-            font-family: 'Poppins', sans-serif;
-            color: #1e293b;
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0 0 8px 0;
+            font-size: 1.4rem;
+            color: var(--clr-text-main);
+            margin-bottom: 12px;
         }
 
         .calc-tile p {
-            color: #64748b;
-            font-size: 13px;
-            margin: 0;
-            line-height: 1.4;
+            font-size: 0.95rem;
+            color: var(--clr-text-muted);
+            line-height: 1.6;
         }
 
-        /* COLORES DE ACENTO SUPERIOR */
-        .tile-accent-blue { border-top: 5px solid #00B4D8; }
-        .tile-accent-navy { border-top: 5px solid #0A192F; }
-        .tile-accent-red { border-top: 5px solid #EF233C; }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        footer {
-            margin-top: 50px;
-            color: #94a3b8;
-            font-size: 13px;
-            text-align: center;
+        /* Subtle Background Particles logic (CSS only approximation for performance) */
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 80% 20%, rgba(0, 245, 212, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 20% 80%, rgba(0, 180, 216, 0.05) 0%, transparent 20%);
         }
     </style>
 </head>
 <body>
+    <div class="particles"></div>
 
-    <div class="header-portal">
-        <h1>EduConectRuben</h1>
-        <p>Plataforma de Herramientas de Cálculo Interactivas</p>
+    <div class="hero-section">
+        <h1 class="hero-title">EduConectRuben</h1>
+        <p class="hero-subtitle">Plataforma de Cálculo Profesional Multifuncional</p>
     </div>
 
     <div class="grid-container">
-        
-        <a href="1. Nivel Básico (Primaria y Uso Cotidiano)/index.html" class="calc-tile tile-accent-blue">
+        <!-- Nivel 1 -->
+        <a href="1. Nivel Básico (Primaria y Uso Cotidiano)/index.html" class="glass-panel calc-tile">
             <div class="icon-wrapper"><i class="fa-solid fa-calculator"></i></div>
             <h3>1. Nivel Básico</h3>
-            <p>Primaria y Uso Cotidiano. Operaciones estándar y fracciones.</p>
+            <p>Primaria y Uso Cotidiano. Operaciones estándar, porcentajes y fracciones.</p>
         </a>
 
-        <a href="2. Nivel Medio y Bachillerato (Humanístico y Técnico)/index.html" class="calc-tile tile-accent-blue">
+        <!-- Nivel 2 -->
+        <a href="2. Nivel Medio y Bachillerato (Humanístico y Técnico)/index.html" class="glass-panel calc-tile accent-alt">
             <div class="icon-wrapper"><i class="fa-solid fa-square-root-variable"></i></div>
             <h3>2. Nivel Medio</h3>
-            <p>Bachillerato Humanístico y Técnico. Álgebra y trigonometría.</p>
+            <p>Bachillerato. Álgebra, Trigonometría y Progresiones (Multifuncional).</p>
         </a>
 
-        <a href="3. Nivel Técnico y Preuniversitario/index.html" class="calc-tile tile-accent-blue">
+        <!-- Nivel 3 -->
+        <a href="3. Nivel Técnico y Preuniversitario/index.html" class="glass-panel calc-tile accent-alt">
             <div class="icon-wrapper"><i class="fa-solid fa-chart-pie"></i></div>
             <h3>3. Nivel Técnico</h3>
-            <p>Nivel Técnico y Preuniversitario. Matrices, Cramer y estadística.</p>
+            <p>Técnico y Preuniversitario. Matrices, Cramer y Estadística Descriptiva.</p>
         </a>
 
-        <a href="4. Nivel Superior y Profesional (Ingeniería y Sistemas)/index.html" class="calc-tile tile-accent-navy">
+        <!-- Nivel 4 -->
+        <a href="4. Nivel Superior y Profesional (Ingeniería y Sistemas)/index.html" class="glass-panel calc-tile">
             <div class="icon-wrapper"><i class="fa-solid fa-laptop-code"></i></div>
             <h3>4. Nivel Superior</h3>
-            <p>Ingeniería y Sistemas. Modo Programador y matrices avanzadas.</p>
+            <p>Ingeniería y Sistemas. Conversión de bases, Op. Bit a Bit y cálculo avanzado.</p>
         </a>
 
-        <a href="5. Todos los Niveles(1-4)/index.html" class="calc-tile tile-accent-navy">
+        <!-- Todos -->
+        <a href="5. Todos los Niveles(1-4)/index.html" class="glass-panel calc-tile">
             <div class="icon-wrapper"><i class="fa-solid fa-layer-group"></i></div>
             <h3>5. Todos los Niveles</h3>
             <p>Interfaz Unificada Global para gestión y configuración centralizada.</p>
         </a>
 
-        <a href="6. manual/index.html" class="calc-tile tile-accent-red">
+        <!-- Manual -->
+        <a href="6. manual/index.html" class="glass-panel calc-tile accent-danger">
             <div class="icon-wrapper"><i class="fa-solid fa-book-bookmark"></i></div>
-            <h3>6. Manual</h3>
-            <p>Manual Técnico de Usuario. Documentación y guías del ecosistema.</p>
+            <h3>6. Manual Completo</h3>
+            <p>Documentación y guías del ecosistema de cálculo.</p>
         </a>
-
     </div>
 
-    <footer>
-        &copy; 2026 EduConectRuben | Suite de Herramientas Tecnológicas | CEA Herman Ortiz Camargo
-    </footer>
-
+    <script src="assets/js/global.js"></script>
 </body>
 </html>

@@ -3,357 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduConectRuben | Nivel Superior y Profesional</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <title>Nivel Superior | EduConectRuben</title>
+    
+    <link rel="stylesheet" href="../assets/css/global.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* =========================================
-           DISEÑO INSTITUCIONAL EDUCONECTRUBEN
-           ========================================= */
-        :root {
-            --clr-navy: #0A192F;
-            --clr-blue: #00B4D8;
-            --clr-hover: #0096C7;
-            --clr-white: #FFFFFF;
-            --clr-bg: #F4F7FB;
-            --clr-border: #E0E5EC;
-            --shadow: 0 10px 30px rgba(10, 25, 47, 0.08);
-            --radius: 12px;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-
-        body {
-            background-color: var(--clr-bg); color: #333;
-            display: flex; justify-content: center; align-items: center;
-            min-height: 100vh; padding: 20px;
-        }
-
-        .app-container {
-            background-color: var(--clr-white); width: 100%; max-width: 750px;
-            border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;
-            border-top: 6px solid var(--clr-navy);
-        }
-
-        header {
-            background-color: var(--clr-navy); color: var(--white);
-            padding: 20px; text-align: center;
-        }
-        header h1 { color: var(--clr-blue); font-size: 1.6rem; font-family: 'Poppins', sans-serif; }
-        header p { color: #FFFFFF; font-size: 0.88rem; opacity: 0.85; margin-top: 2px; }
-
-        /* NAVBAR SPA */
-        .tab-menu { display: flex; background-color: #FAFCFF; border-bottom: 2px solid var(--clr-border); overflow-x: auto; }
-        .tab-btn {
-            flex: 1; padding: 14px 10px; background: none; border: none;
-            border-bottom: 3px solid transparent; font-size: 0.95rem; font-weight: 600;
-            color: var(--clr-navy); cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
-        }
-        .tab-btn:hover { background-color: #F0F4F8; color: var(--clr-blue); }
-        .tab-btn.active { color: var(--clr-blue); border-bottom-color: var(--clr-blue); background-color: var(--clr-white); }
-
-        /* CUERPO CENTRAL */
-        .workspace-content { padding: 25px; }
-        .calc-section { display: none; animation: fadeIn 0.3s ease-in-out; }
-        .calc-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* FORMULARIOS COMUNES */
-        .form-group { margin-bottom: 15px; }
-        label { display: block; font-weight: 600; margin-bottom: 6px; color: var(--clr-navy); font-size: 0.88rem; }
-        select, input { width: 100%; padding: 11px; border: 2px solid var(--clr-border); border-radius: 8px; font-size: 0.95rem; }
-        select:focus, input:focus { outline: none; border-color: var(--clr-blue); }
+        .app-container { max-width: 900px; margin: 40px auto; padding: 30px; }
         
-        .fields-split { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .btn-action { 
-            width: 100%; padding: 13px; background-color: var(--clr-blue); 
-            color: var(--clr-white); border: none; border-radius: 8px; 
-            font-size: 1.05rem; font-weight: bold; cursor: pointer; transition: 0.25s; 
-            margin-top: 10px;
-        }
-        .btn-action:hover { background-color: var(--clr-hover); }
+        /* Programmer Calc Layout */
+        .prog-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
         
-        .result-box { 
-            margin-top: 20px; padding: 15px; background-color: #E8F4F8; 
-            border-left: 5px solid var(--clr-blue); border-radius: 4px; 
-            font-size: 1rem; color: var(--clr-navy); display: none; line-height: 1.5; 
+        .prog-bases { display: flex; flex-direction: column; gap: 10px; }
+        .base-row { 
+            display: flex; align-items: center; background: rgba(0,0,0,0.3);
+            padding: 10px 15px; border-radius: 8px; border: 1px solid var(--clr-border);
+            cursor: pointer; transition: var(--transition);
         }
-
-        /* CONSOLA DE PROGRAMADOR RESULTADOS */
-        .prog-result-layout { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
-        .prog-row { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: var(--clr-white); padding: 10px 15px; border-radius: 6px; 
-            border: 1px solid var(--clr-border); 
+        .base-row:hover { background: rgba(255,255,255,0.05); }
+        .base-row.active { border-color: var(--clr-primary); background: rgba(0, 180, 216, 0.1); }
+        .base-label { width: 45px; font-weight: bold; color: var(--clr-primary); font-size: 0.85rem; }
+        .base-val { flex: 1; font-family: var(--font-mono); text-align: right; letter-spacing: 1px; word-break: break-all;}
+        
+        .prog-keypad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .btn-c {
+            padding: 12px 5px; font-size: 1rem; font-weight: bold; border: none;
+            border-radius: 6px; cursor: pointer; background: rgba(255, 255, 255, 0.1);
+            color: var(--clr-text-main); transition: var(--transition); font-family: var(--font-mono);
         }
-        .prog-row span:first-child { font-weight: bold; color: var(--clr-navy); width: 110px; font-size: 0.85rem; }
-        .prog-row span:last-child { font-family: monospace; font-size: 1.1rem; color: #EF233C; word-break: break-all; text-align: right; }
-
-        /* CUADRÍCULA MATRIZ 3x3 SARRUS */
-        .matrix-container { display: flex; justify-content: center; margin: 10px 0 20px 0; }
-        .matrix-grid-3x3 { 
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; 
-            background: #F8FAFC; padding: 20px; border-radius: 8px; 
-            border-left: 4px solid var(--clr-navy); border-right: 4px solid var(--clr-navy);
-            max-width: 260px;
+        .btn-c:hover { background: rgba(255, 255, 255, 0.2); }
+        .btn-c:active { transform: scale(0.95); }
+        .btn-c:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-c.op { background: rgba(0, 180, 216, 0.2); color: var(--clr-primary); }
+        .btn-c.ac { background: rgba(239, 35, 60, 0.2); color: var(--clr-danger); }
+        .btn-c.eq { background: var(--clr-primary); color: white; }
+        .btn-c.bit { background: rgba(0, 245, 212, 0.1); color: var(--clr-accent); font-size: 0.8rem; }
+        
+        .bits-display {
+            grid-column: 1 / -1; display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-bottom: 10px;
         }
-        .matrix-grid-3x3 input { text-align: center; font-weight: bold; padding: 8px; width: 65px; }
+        .bit-block { text-align: center; font-size: 0.75rem; color: var(--clr-text-muted); font-family: var(--font-mono); }
+        .bit-val { font-size: 1rem; font-weight: bold; color: var(--clr-accent); margin-top: 2px; }
 
-        /* DISEÑO DE INTERFAZ DE LÓGICA */
-        .logic-panel { background: #F8FAFC; padding: 20px; border-radius: 8px; border: 1px solid var(--clr-border); margin-bottom: 15px; text-align: center; }
-        .logic-buttons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; }
-        .btn-logic-op { padding: 12px; font-size: 1.2rem; font-weight: bold; border: none; border-radius: 6px; background-color: var(--clr-navy); color: white; cursor: pointer; transition: 0.2s; }
-        .btn-logic-op:hover { background-color: var(--clr-blue); }
+        @media(max-width: 768px) { .prog-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <div class="nav-brand"><i class="fa-solid fa-laptop-code"></i> Nivel 4: Ingeniería y Sistemas</div>
+        <a href="../index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+    </nav>
 
-    <main class="app-container">
-        <header>
-            <h1>EduConectRuben</h1>
-            <p>Módulo Nivel Superior: Sistemas, Matrices, Finanzas y Lógica Pro</p>
-        </header>
+    <main class="app-container glass-panel">
+        <div class="tabs-container">
+            <button class="tab-btn active" data-target="tab-prog">Calculadora Programador</button>
+            <button class="tab-btn" data-target="tab-info">Conversión de Unidades</button>
+        </div>
 
-        <nav class="tab-menu">
-            <button class="tab-btn active" onclick="switchTab('tab-prog', this)"><i class="fa-solid fa-binary"></i> Programador</button>
-            <button class="tab-btn" onclick="switchTab('tab-logic', this)"><i class="fa-solid fa-brain"></i> Lógica Matemática</button>
-            <button class="tab-btn" onclick="switchTab('tab-matrix', this)"><i class="fa-solid fa-table-cells"></i> Matriz 3x3</button>
-            <button class="tab-btn" onclick="switchTab('tab-finance', this)"><i class="fa-solid fa-chart-line"></i> Financiera</button>
-        </nav>
+        <!-- Programador -->
+        <section id="tab-prog" class="tab-content active">
+            <div class="prog-grid">
+                
+                <!-- Display y Bases -->
+                <div class="prog-bases">
+                    <div class="base-row" onclick="setBase(16)" id="row-hex">
+                        <span class="base-label">HEX</span><span class="base-val" id="val-hex">0</span>
+                    </div>
+                    <div class="base-row active" onclick="setBase(10)" id="row-dec">
+                        <span class="base-label">DEC</span><span class="base-val" id="val-dec">0</span>
+                    </div>
+                    <div class="base-row" onclick="setBase(8)" id="row-oct">
+                        <span class="base-label">OCT</span><span class="base-val" id="val-oct">0</span>
+                    </div>
+                    <div class="base-row" onclick="setBase(2)" id="row-bin">
+                        <span class="base-label">BIN</span><span class="base-val" id="val-bin">0</span>
+                    </div>
 
-        <div class="workspace-content">
-            
-            <section id="tab-prog" class="calc-section active">
-                <div class="form-group">
-                    <label>Base Numérica de Entrada:</label>
-                    <select id="pr-base">
-                        <option value="10">Decimal (Base 10)</option>
-                        <option value="2">Binario (Base 2)</option>
-                        <option value="16">Hexadecimal (Base 16)</option>
+                    <!-- Representación de Bits (64-bit visual approximation: 32 bits shown) -->
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.4); border-radius: 8px;">
+                        <div style="font-size: 0.75rem; color: var(--clr-text-muted); margin-bottom: 10px;">Visualización Binaria (32 bits LSB)</div>
+                        <div class="bits-display" id="bits-container">
+                            <!-- JS will populate 8 blocks of 4 bits -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teclado -->
+                <div class="prog-keypad">
+                    <!-- Fila 1: Bitwise -->
+                    <button class="btn-c bit" onclick="setOp('&')">AND</button>
+                    <button class="btn-c bit" onclick="setOp('|')">OR</button>
+                    <button class="btn-c bit" onclick="setOp('^')">XOR</button>
+                    <button class="btn-c bit" onclick="calcNot()">NOT</button>
+
+                    <!-- Fila 2: Letras HEX -->
+                    <button class="btn-c hex-key" onclick="append('A')" disabled>A</button>
+                    <button class="btn-c hex-key" onclick="append('B')" disabled>B</button>
+                    <button class="btn-c bit" onclick="setOp('<<')">LSH</button>
+                    <button class="btn-c bit" onclick="setOp('>>')">RSH</button>
+                    
+                    <!-- Fila 3 -->
+                    <button class="btn-c hex-key" onclick="append('C')" disabled>C</button>
+                    <button class="btn-c hex-key" onclick="append('D')" disabled>D</button>
+                    <button class="btn-c ac" onclick="clearProg()">AC</button>
+                    <button class="btn-c op" onclick="setOp('/')">÷</button>
+                    
+                    <!-- Fila 4 -->
+                    <button class="btn-c hex-key" onclick="append('E')" disabled>E</button>
+                    <button class="btn-c hex-key" onclick="append('F')" disabled>F</button>
+                    <button class="btn-c" onclick="append('7')" id="k7">7</button>
+                    <button class="btn-c" onclick="append('8')" id="k8">8</button>
+                    
+                    <!-- Fila 5 -->
+                    <button class="btn-c op" onclick="setOp('*')">×</button>
+                    <button class="btn-c" onclick="append('9')" id="k9">9</button>
+                    <button class="btn-c" onclick="append('4')" id="k4">4</button>
+                    <button class="btn-c" onclick="append('5')" id="k5">5</button>
+                    
+                    <!-- Fila 6 -->
+                    <button class="btn-c op" onclick="setOp('-')">−</button>
+                    <button class="btn-c" onclick="append('6')" id="k6">6</button>
+                    <button class="btn-c" onclick="append('1')" id="k1">1</button>
+                    <button class="btn-c" onclick="append('2')" id="k2">2</button>
+                    
+                    <!-- Fila 7 -->
+                    <button class="btn-c op" onclick="setOp('+')">+</button>
+                    <button class="btn-c" onclick="append('3')" id="k3">3</button>
+                    <button class="btn-c" onclick="append('0')" id="k0">0</button>
+                    <button class="btn-c eq" onclick="calcEq()">=</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conversión Informática -->
+        <section id="tab-info" class="tab-content">
+            <p class="helper-text">Conversión de unidades de almacenamiento de datos</p>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>Valor a Convertir:</label>
+                    <input type="number" id="info-val" class="input-field" value="1">
+                </div>
+                <div class="input-group">
+                    <label>Unidad de Origen:</label>
+                    <select id="info-from" class="input-field">
+                        <option value="1">Bytes (B)</option>
+                        <option value="1024">Kilobytes (KB)</option>
+                        <option value="1048576" selected>Megabytes (MB)</option>
+                        <option value="1073741824">Gigabytes (GB)</option>
+                        <option value="1099511627776">Terabytes (TB)</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Ingresa el Valor:</label>
-                    <input type="text" id="pr-val" placeholder="Ej: 255 o 11111111 o FF" autocomplete="off">
-                </div>
-                <button type="button" class="btn-action" onclick="solveProgrammer()">Convertir Bases</button>
-                
-                <div id="prog-output-box" class="result-box" style="padding: 12px;">
-                    <strong>Resultados de Conversión Simultánea:</strong>
-                    <div class="prog-result-layout">
-                        <div class="prog-row"><span>BINARIO:</span> <span id="res-bin">-</span></div>
-                        <div class="prog-row"><span>DECIMAL:</span> <span id="res-dec">-</span></div>
-                        <div class="prog-row"><span>HEXADECIMAL:</span> <span id="res-hex">-</span></div>
-                    </div>
-                </div>
-            </section>
+            </div>
+            <button class="btn-primary" onclick="solveInfo()"><i class="fa-solid fa-bolt"></i> Convertir a Todas las Unidades</button>
+            <div id="info-result"></div>
+        </section>
 
-            <section id="tab-logic" class="calc-section">
-                <p style="text-align:center; margin-bottom: 15px; font-size: 0.95rem; color:#555;">Evaluador de Proposiciones y Conectores Lógicos</p>
-                
-                <div class="logic-panel">
-                    <div class="fields-split">
-                        <div class="form-group">
-                            <label>Variable P:</label>
-                            <select id="log-p"><option value="V">V (Verdadero / 1)</option><option value="F">F (Falso / 0)</option></select>
-                        </div>
-                        <div class="form-group">
-                            <label>Variable Q:</label>
-                            <select id="log-q"><option value="V">V (Verdadero / 1)</option><option value="F">F (Falso / 0)</option></select>
-                        </div>
-                    </div>
-                    
-                    <label>Selecciona el Conector Lógico:</label>
-                    <div class="logic-buttons-grid">
-                        <button type="button" class="btn-logic-op" onclick="solveLogic('AND')" title="Conjunción (Y)">P ∧ Q</button>
-                        <button type="button" class="btn-logic-op" onclick="solveLogic('OR')" title="Disyunción (O)">P ∨ Q</button>
-                        <button type="button" class="btn-logic-op" onclick="solveLogic('COND')" title="Condicional (Implica)">P → Q</button>
-                        <button type="button" class="btn-logic-op" onclick="solveLogic('BICOND')" title="Bicondicional (Equivalencia)">P ↔ Q</button>
-                    </div>
-                </div>
-                <div id="logic-result" class="result-box"></div>
-            </section>
-
-            <section id="tab-matrix" class="calc-section">
-                <p style="text-align:center; margin-bottom: 15px; font-size: 0.9rem; color:#555;">Cálculo del Determinante |A| mediante la Regla de Sarrus</p>
-                <div class="matrix-container">
-                    <div class="matrix-grid-3x3">
-                        <input type="number" id="m00" placeholder="a₁₁" step="any">
-                        <input type="number" id="m01" placeholder="a₁₂" step="any">
-                        <input type="number" id="m02" placeholder="a₁₃" step="any">
-                        
-                        <input type="number" id="m10" placeholder="a₂₁" step="any">
-                        <input type="number" id="m11" placeholder="a₂₂" step="any">
-                        <input type="number" id="m12" placeholder="a₂₃" step="any">
-                        
-                        <input type="number" id="m20" placeholder="a₃₁" step="any">
-                        <input type="number" id="m21" placeholder="a₃₂" step="any">
-                        <input type="number" id="m22" placeholder="a₃₃" step="any">
-                    </div>
-                </div>
-                <button type="button" class="btn-action" onclick="solveMatrix()">Calcular Determinante</button>
-                <div id="matrix-result" class="result-box"></div>
-            </section>
-
-            <section id="tab-finance" class="calc-section">
-                <div class="fields-split">
-                    <div class="form-group"><label>Capital Inicial (P):</label><input type="number" id="f-p" step="any"></div>
-                    <div class="form-group"><label>Tasa % Anual (r):</label><input type="number" id="f-r" step="any"></div>
-                </div>
-                <div class="fields-split">
-                    <div class="form-group"><label>Tiempo (Años t):</label><input type="number" id="f-t" step="any"></div>
-                    <div class="form-group">
-                        <label>Frecuencia de Capitalización (n):</label>
-                        <select id="f-n">
-                            <option value="1">Anual (1 vez al año)</option>
-                            <option value="12">Mensual (12 veces al año)</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="button" class="btn-action" onclick="solveFinance()">Proyectar Capital</button>
-                <div id="finance-result" class="result-box"></div>
-            </section>
-
-        </div>
     </main>
 
+    <script src="../assets/js/global.js"></script>
     <script>
-        /* ROUTER SPA */
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active');
-        }
+        // --- PROGRAMMER CALCULATOR ---
+        let currentBase = 10;
+        let currentValue = 0n; // Use BigInt to prevent overflow in bitwise ops
+        let pendingOp = null;
+        let pendingValue = null;
+        let isNewInput = true;
 
-        /* =========================================
-           LÓGICA: CALCULADORA DE PROGRAMADOR
-           ========================================= */
-        function solveProgrammer() {
-            const base = parseInt(document.getElementById('pr-base').value);
-            const rawVal = document.getElementById('pr-val').value.trim();
-            const outPanel = document.getElementById('prog-output-box');
-
-            if(rawVal === "") { alert("Por favor introduce un valor numérico."); return; }
-
-            const validators = {
-                2: /^[01]+$/,
-                10: /^-?\d+$/,
-                16: /^[0-9A-Fa-f]+$/
-            };
-
-            if (!validators[base].test(rawVal)) {
-                alert(`Error: El formato ingresado no corresponde a la Base ${base}.`);
-                outPanel.style.display = "none"; return;
-            }
-
-            const decValue = parseInt(rawVal, base);
-            if (isNaN(decValue)) { alert("Error en el parseo numérico."); return; }
-
-            document.getElementById('res-bin').innerText = decValue.toString(2);
-            document.getElementById('res-dec').innerText = decValue.toString(10);
-            document.getElementById('res-hex').innerText = decValue.toString(16).toUpperCase();
-            outPanel.style.display = "block";
-        }
-
-        /* =========================================
-           LÓGICA: CONECTORES LÓGICOS MATEMÁTICOS
-           ========================================= */
-        function solveLogic(op) {
-            const p = document.getElementById('log-p').value === 'V';
-            const q = document.getElementById('log-q').value === 'V';
-            const resBox = document.getElementById('logic-result');
+        function renderBits() {
+            const container = document.getElementById('bits-container');
+            container.innerHTML = '';
             
-            let finalValue = false;
-            let opSymbol = "";
-            let ruleText = "";
+            // Get 32-bit representation
+            const masked = BigInt.asIntN(32, currentValue);
+            let binStr = (masked < 0n ? (~-masked).toString(2) : masked.toString(2)).padStart(32, '0');
+            if(binStr.length > 32) binStr = binStr.substring(binStr.length - 32);
 
-            if (op === 'AND') {
-                finalValue = p && q; opSymbol = "∧ (Conjunción)";
-                ruleText = "La regla dicta que la Conjunción es Verdadera <strong>únicamente</strong> cuando ambas variables son Verdaderas.";
-            } else if (op === 'OR') {
-                finalValue = p || q; opSymbol = "∨ (Disyunción)";
-                ruleText = "La regla dicta que la Disyunción es Falsa <strong>únicamente</strong> cuando ambas variables son Falsas.";
-            } else if (op === 'COND') {
-                finalValue = !p || q; opSymbol = "→ (Condicional)";
-                ruleText = "La regla dicta que la Implicación es Falsa <strong>únicamente</strong> cuando el antecedente es Verdadero y el consecuente es Falso (V → F).";
-            } else if (op === 'BICOND') {
-                finalValue = p === q; opSymbol = "↔ (Bicondicional)";
-                ruleText = "La regla dicta que la Equivalencia es Verdadera <strong>únicamente</strong> cuando ambas variables poseen el mismo valor lógico (V ↔ V o F ↔ F).";
+            for(let i=0; i<8; i++) {
+                const chunk = binStr.substring(i*4, i*4+4);
+                container.innerHTML += `<div class="bit-block">${31 - i*4}<div class="bit-val">${chunk}</div></div>`;
             }
+        }
 
-            const resStr = finalValue ? "<span style='color:#2A9D8F; font-weight:bold;'>VERDADERO (1)</span>" : "<span style='color:#EF233C; font-weight:bold;'>FALSO (0)</span>";
+        function updateDisplays() {
+            document.getElementById('val-hex').innerText = currentValue.toString(16).toUpperCase();
+            document.getElementById('val-dec').innerText = currentValue.toString(10);
+            document.getElementById('val-oct').innerText = currentValue.toString(8);
+            document.getElementById('val-bin').innerText = currentValue.toString(2);
+            renderBits();
+        }
+
+        function setBase(base) {
+            currentBase = base;
+            document.querySelectorAll('.base-row').forEach(r => r.classList.remove('active'));
+            if(base===16) document.getElementById('row-hex').classList.add('active');
+            if(base===10) document.getElementById('row-dec').classList.add('active');
+            if(base===8) document.getElementById('row-oct').classList.add('active');
+            if(base===2) document.getElementById('row-bin').classList.add('active');
+
+            // Update keys based on base
+            document.querySelectorAll('.hex-key').forEach(k => k.disabled = base !== 16);
+            document.getElementById('k9').disabled = base < 10;
+            document.getElementById('k8').disabled = base < 10;
+            document.getElementById('k7').disabled = base < 8;
+            document.getElementById('k6').disabled = base < 8;
+            document.getElementById('k5').disabled = base < 8;
+            document.getElementById('k4').disabled = base < 8;
+            document.getElementById('k3').disabled = base < 8;
+            document.getElementById('k2').disabled = base < 8;
+        }
+
+        function append(char) {
+            if (isNewInput) {
+                currentValue = BigInt(parseInt(char, currentBase));
+                isNewInput = false;
+            } else {
+                const str = currentValue.toString(currentBase) + char;
+                try { currentValue = BigInt("0x" + parseInt(str, currentBase).toString(16)); }
+                catch(e){} // ignore overflow/parse err temporarily
+            }
+            updateDisplays();
+        }
+
+        function setOp(op) {
+            if (pendingOp !== null && !isNewInput) calcEq();
+            pendingOp = op;
+            pendingValue = currentValue;
+            isNewInput = true;
+        }
+
+        function calcEq() {
+            if (pendingOp === null || pendingValue === null) return;
+            let res = 0n;
+            if(pendingOp === '+') res = pendingValue + currentValue;
+            if(pendingOp === '-') res = pendingValue - currentValue;
+            if(pendingOp === '*') res = pendingValue * currentValue;
+            if(pendingOp === '/') res = currentValue !== 0n ? pendingValue / currentValue : 0n;
             
-            resBox.innerHTML = `
-                <strong>Evaluación de Operación de Lógica Proposicional:</strong><br><br>
-                Expresión Evaluada: <strong>P ${opSymbol} Q</strong><br>
-                Resultado Final: ${resStr}<br><br>
-                <span style="font-size:0.9rem; color:#555;"><strong>Análisis Teórico:</strong> ${ruleText}</span>
-            `;
-            resBox.style.display = "block";
+            // Bitwise (limit to 32 bits for typical programmer calc feel)
+            let a32 = BigInt.asIntN(32, pendingValue);
+            let b32 = BigInt.asIntN(32, currentValue);
+            
+            if(pendingOp === '&') res = a32 & b32;
+            if(pendingOp === '|') res = a32 | b32;
+            if(pendingOp === '^') res = a32 ^ b32;
+            if(pendingOp === '<<') res = a32 << b32;
+            if(pendingOp === '>>') res = a32 >> b32;
+
+            currentValue = res;
+            pendingOp = null;
+            isNewInput = true;
+            updateDisplays();
         }
 
-        /* =========================================
-           LÓGICA: MATRICES POR REGLA DE SARRUS
-           ========================================= */
-        function solveMatrix() {
-            const resBox = document.getElementById('matrix-result');
-            const m = [
-                [parseFloat(document.getElementById('m00').value), parseFloat(document.getElementById('m01').value), parseFloat(document.getElementById('m02').value)],
-                [parseFloat(document.getElementById('m10').value), parseFloat(document.getElementById('m11').value), parseFloat(document.getElementById('m12').value)],
-                [parseFloat(document.getElementById('m20').value), parseFloat(document.getElementById('m21').value), parseFloat(document.getElementById('m22').value)]
-            ];
-
-            for(let i=0; i<3; i++) {
-                for(let j=0; j<3; j++) {
-                    if(isNaN(m[i][j])) {
-                        resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Llene las 9 posiciones de la matriz 3x3.</span>";
-                        resBox.style.display = "block"; return;
-                    }
-                }
-            }
-
-            const diagPos = (m[0][0]*m[1][1]*m[2][2]) + (m[0][1]*m[1][2]*m[2][0]) + (m[0][2]*m[1][0]*m[2][1]);
-            const diagNeg = (m[0][2]*m[1][1]*m[2][0]) + (m[0][0]*m[1][2]*m[2][1]) + (m[0][1]*m[1][0]*m[2][2]);
-            const det = diagPos - diagNeg;
-
-            resBox.innerHTML = `
-                <strong>Resolución por Método de Sarrus:</strong><br><br>
-                Diagonales Principales (+) = ${Math.round(diagPos * 1000) / 1000}<br>
-                Diagonales Secundarias (-) = ${Math.round(diagNeg * 1000) / 1000}<br><br>
-                <span style="font-size:1.1rem; color:var(--clr-navy);"><strong>Determinante |A| = ${Math.round(det * 1000) / 1000}</strong></span>
-            `;
-            resBox.style.display = "block";
+        function calcNot() {
+            currentValue = ~BigInt.asIntN(32, currentValue);
+            isNewInput = true;
+            updateDisplays();
         }
 
-        /* =========================================
-           LÓGICA: FINANCIERA (INTERÉS COMPUESTO)
-           ========================================= */
-        function solveFinance() {
-            const P = parseFloat(document.getElementById('f-p').value);
-            const rPercent = parseFloat(document.getElementById('f-r').value);
-            const t = parseFloat(document.getElementById('f-t').value);
-            const n = parseInt(document.getElementById('f-n').value);
-            const resBox = document.getElementById('finance-result');
+        function clearProg() {
+            currentValue = 0n; pendingOp = null; pendingValue = null; isNewInput = true;
+            updateDisplays();
+        }
 
-            if(isNaN(P) || isNaN(rPercent) || isNaN(t) || P <= 0 || rPercent < 0 || t <= 0) {
-                resBox.innerHTML = "<span style='color:#EF233C;'><strong>Error:</strong> Verifique los parámetros financieros.</span>";
-                resBox.style.display = "block"; return;
-            }
+        // Initialize
+        setBase(10);
+        updateDisplays();
 
-            const r = rPercent / 100;
-            const A = P * Math.pow((1 + r / n), (n * t));
-            const totalInterest = A - P;
+        // --- CONVERSIÓN DE UNIDADES ---
+        function solveInfo() {
+            const val = parseFloat(document.getElementById('info-val').value);
+            const mult = parseFloat(document.getElementById('info-from').value);
+            if (isNaN(val)) { showResult('info-result', 'Error: Ingresa un valor numérico.', 'error'); return; }
 
-            resBox.innerHTML = `
-                <strong>Proyección de Rentabilidad del Proyecto:</strong><br><br>
-                Capital Inicial Invertido (P): <strong>$${P.toLocaleString()}</strong><br>
-                Interés Líquido Acumulado (I): <strong>$${totalInterest.toFixed(2).toLocaleString()}</strong><br><br>
-                <span style="font-size:1.1rem; color:#2A9D8F;"><strong>Monto Total Proyectado (A): $${A.toFixed(2).toLocaleString()}</strong></span>
+            const bytes = val * mult;
+            const html = `
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div><strong>Bytes (B):</strong> ${bytes}</div>
+                    <div><strong>Kilobytes (KB):</strong> ${(bytes / 1024).toFixed(4)}</div>
+                    <div><strong>Megabytes (MB):</strong> ${(bytes / 1048576).toFixed(4)}</div>
+                    <div><strong>Gigabytes (GB):</strong> ${(bytes / 1073741824).toFixed(4)}</div>
+                    <div><strong>Terabytes (TB):</strong> ${(bytes / 1099511627776).toFixed(6)}</div>
+                </div>
             `;
-            resBox.style.display = "block";
+            showResult('info-result', html, 'success');
         }
     </script>
 </body>

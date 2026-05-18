@@ -148,12 +148,14 @@
 
         <!-- Porcentajes -->
         <section id="tab-pct" class="tab-content">
-            <div class="input-group">
-                <label>Tipo de Análisis:</label>
-                <select id="pct-type" class="input-field">
-                    <option value="of">Calcular el X% de Y</option>
-                    <option value="is">Qué porcentaje es X de Y</option>
-                </select>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <div class="input-group">
+                    <label style="color: var(--clr-primary); font-size: 1rem;"><i class="fa-solid fa-magnifying-glass"></i> ¿Qué deseas calcular?</label>
+                    <select id="pct-type" class="input-field" style="font-size: 1.1rem; font-weight: bold;">
+                        <option value="of">Calcular el X% de Y</option>
+                        <option value="is">Qué porcentaje es X de Y</option>
+                    </select>
+                </div>
             </div>
             <div class="grid-2">
                 <div class="input-group">
@@ -165,7 +167,7 @@
                     <input type="number" id="pct-y" class="input-field" step="any" placeholder="Ej: 150">
                 </div>
             </div>
-            <button class="btn-primary" onclick="solvePercent()"><i class="fa-solid fa-bolt"></i> Calcular Porcentaje</button>
+            <button class="btn-primary" onclick="solvePercent()"><i class="fa-solid fa-calculator"></i> Calcular</button>
             <div id="pct-result"></div>
         </section>
 

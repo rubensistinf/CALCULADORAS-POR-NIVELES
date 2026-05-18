@@ -168,25 +168,47 @@
 
         <!-- Ecuación Cuadrática -->
         <section id="tab-quad" class="tab-content">
-            <p class="helper-text">Estructura: <strong>ax² + bx + c = 0</strong></p>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <div class="input-group">
+                    <label style="color: var(--clr-primary); font-size: 1rem;"><i class="fa-solid fa-magnifying-glass"></i> ¿Qué deseas calcular?</label>
+                    <select id="quad-unknown" class="input-field" style="font-size: 1.1rem; font-weight: bold;">
+                        <option value="roots">Raíces (x₁, x₂)</option>
+                        <option value="vertex">Vértice de la Parábola (h, k)</option>
+                        <option value="discriminant">Discriminante (Δ)</option>
+                    </select>
+                </div>
+            </div>
+
+            <p class="helper-text">Estructura: <strong>ax² + bx + c = 0</strong>. Ingresa los coeficientes.</p>
             <div class="grid-2">
                 <div class="input-group"><label>Coeficiente a:</label><input type="number" id="q-a" class="input-field" step="any"></div>
                 <div class="input-group"><label>Coeficiente b:</label><input type="number" id="q-b" class="input-field" step="any"></div>
                 <div class="input-group"><label>Coeficiente c:</label><input type="number" id="q-c" class="input-field" step="any"></div>
             </div>
-            <button class="btn-primary" onclick="solveQuadratic()"><i class="fa-solid fa-bolt"></i> Resolver Ecuación</button>
+            <button class="btn-primary" onclick="solveQuadratic()"><i class="fa-solid fa-calculator"></i> Calcular</button>
             <div id="quad-result"></div>
         </section>
 
         <!-- Pitágoras -->
         <section id="tab-pyt" class="tab-content">
-            <p class="helper-text">Deja en blanco el lado que deseas calcular (a² + b² = c²)</p>
-            <div class="grid-2">
-                <div class="input-group"><label>Cateto (a):</label><input type="number" id="py-a" class="input-field" step="any"></div>
-                <div class="input-group"><label>Cateto (b):</label><input type="number" id="py-b" class="input-field" step="any"></div>
-                <div class="input-group"><label>Hipotenusa (c):</label><input type="number" id="py-c" class="input-field" step="any"></div>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <div class="input-group">
+                    <label style="color: var(--clr-primary); font-size: 1rem;"><i class="fa-solid fa-magnifying-glass"></i> ¿Qué deseas calcular? (Incógnita)</label>
+                    <select id="pyt-unknown" class="input-field" style="font-size: 1.1rem; font-weight: bold;" onchange="updatePytUI()">
+                        <option value="c">Hipotenusa (c)</option>
+                        <option value="a">Cateto (a)</option>
+                        <option value="b">Cateto (b)</option>
+                    </select>
+                </div>
             </div>
-            <button class="btn-primary" onclick="solvePythagoras()"><i class="fa-solid fa-bolt"></i> Calcular Lado</button>
+
+            <p class="helper-text">Teorema: <strong>a² + b² = c²</strong>. Ingresa los dos lados conocidos.</p>
+            <div class="grid-2">
+                <div class="input-group" id="grp-py-a"><label>Cateto (a):</label><input type="number" id="py-a" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-py-b"><label>Cateto (b):</label><input type="number" id="py-b" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-py-c" style="display:none;"><label>Hipotenusa (c):</label><input type="number" id="py-c" class="input-field" step="any"></div>
+            </div>
+            <button class="btn-primary" onclick="solvePythagoras()"><i class="fa-solid fa-calculator"></i> Calcular</button>
             <div id="pyt-result"></div>
         </section>
 
@@ -409,12 +431,27 @@
         // --- Cuadrática ---
         function solveQuadratic() {
             const a = getVal('q-a'); const b = getVal('q-b'); const c = getVal('q-c');
+            const unk = document.getElementById('quad-unknown').value;
+
             if(a === null || b === null || c === null || a === 0) {
                 showResult('quad-result', '<strong>Error:</strong> Ingresa a, b, c. "a" no puede ser 0.', 'error'); return;
             }
             const disc = (b * b) - (4 * a * c);
+
+            if (unk === 'discriminant') {
+                showResult('quad-result', `Discriminante (Δ) = <strong>${disc.toFixed(4)}</strong>`, 'success');
+                return;
+            }
+
+            if (unk === 'vertex') {
+                const h = -b / (2 * a);
+                const k = a * (h * h) + b * h + c;
+                showResult('quad-result', `Vértice (h, k): <br>h (x) = <strong>${h.toFixed(4)}</strong><br>k (y) = <strong>${k.toFixed(4)}</strong>`, 'success');
+                return;
+            }
+
             if(disc < 0) {
-                showResult('quad-result', "La ecuación tiene raíces complejas.", 'warning');
+                showResult('quad-result', "La ecuación tiene raíces complejas (Discriminante menor a 0).", 'warning');
             } else {
                 const x1 = (-b + Math.sqrt(disc)) / (2 * a);
                 const x2 = (-b - Math.sqrt(disc)) / (2 * a);
@@ -423,26 +460,40 @@
         }
 
         // --- Pitágoras ---
+        function updatePytUI() {
+            const unk = document.getElementById('pyt-unknown').value;
+            ['a', 'b', 'c'].forEach(id => {
+                document.getElementById('grp-py-' + id).style.display = (id === unk) ? 'none' : 'block';
+                document.getElementById('py-' + id).value = '';
+            });
+            hideResult('pyt-result');
+        }
+
         function solvePythagoras() {
+            const unk = document.getElementById('pyt-unknown').value;
             let a = getVal('py-a'); let b = getVal('py-b'); let c = getVal('py-c');
+            
+            if (unk === 'a') a = null;
+            if (unk === 'b') b = null;
+            if (unk === 'c') c = null;
+
             const givenCount = [a, b, c].filter(v => v !== null).length;
             if (givenCount !== 2) {
-                showResult('pyt-result', '<strong>Error:</strong> Introduce exactamente 2 lados.', 'error'); return;
+                showResult('pyt-result', '<strong>Error:</strong> Introduce exactamente los 2 lados conocidos.', 'error'); return;
             }
 
-            if (c === null) {
+            if (unk === 'c') {
                 c = Math.sqrt(a*a + b*b);
-                document.getElementById('py-c').value = +c.toFixed(4);
-            } else if (a === null) {
-                if (b >= c) { showResult('pyt-result', 'Hipotenusa (c) debe ser mayor que el cateto (b).', 'error'); return; }
+                showResult('pyt-result', `<div style="font-size:1.2rem;">Hipotenusa (c): <br><span style="font-size:2rem; color:var(--clr-accent); font-weight:bold;">${c.toFixed(4)}</span></div>`, 'success');
+            } else if (unk === 'a') {
+                if (b >= c) { showResult('pyt-result', 'Error: La Hipotenusa (c) debe ser estrictamente mayor que el Cateto (b).', 'error'); return; }
                 a = Math.sqrt(c*c - b*b);
-                document.getElementById('py-a').value = +a.toFixed(4);
-            } else if (b === null) {
-                if (a >= c) { showResult('pyt-result', 'Hipotenusa (c) debe ser mayor que el cateto (a).', 'error'); return; }
+                showResult('pyt-result', `<div style="font-size:1.2rem;">Cateto (a): <br><span style="font-size:2rem; color:var(--clr-accent); font-weight:bold;">${a.toFixed(4)}</span></div>`, 'success');
+            } else if (unk === 'b') {
+                if (a >= c) { showResult('pyt-result', 'Error: La Hipotenusa (c) debe ser estrictamente mayor que el Cateto (a).', 'error'); return; }
                 b = Math.sqrt(c*c - a*a);
-                document.getElementById('py-b').value = +b.toFixed(4);
+                showResult('pyt-result', `<div style="font-size:1.2rem;">Cateto (b): <br><span style="font-size:2rem; color:var(--clr-accent); font-weight:bold;">${b.toFixed(4)}</span></div>`, 'success');
             }
-            showResult('pyt-result', '<strong>¡Éxito!</strong> Lado calculado.', 'success');
         }
     </script>
 </body>

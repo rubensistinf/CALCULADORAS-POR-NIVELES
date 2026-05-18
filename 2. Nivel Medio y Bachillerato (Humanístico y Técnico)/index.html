@@ -108,30 +108,60 @@
 
         <!-- Progresión Aritmética (Multifuncional) -->
         <section id="tab-ari" class="tab-content">
-            <p class="helper-text"><i class="fa-solid fa-circle-info"></i> Introduce los datos que conozcas (al menos 3). Deja en blanco los que desees calcular.</p>
-            <div class="grid-2">
-                <div class="input-group"><label>Primer Término (a₁):</label><input type="number" id="ari-a1" class="input-field" step="any"></div>
-                <div class="input-group"><label>Diferencia (d):</label><input type="number" id="ari-d" class="input-field" step="any"></div>
-                <div class="input-group"><label>Cantidad de Términos (n):</label><input type="number" id="ari-n" class="input-field" step="any"></div>
-                <div class="input-group"><label>Último Término (aₙ):</label><input type="number" id="ari-an" class="input-field" step="any"></div>
-                <div class="input-group"><label>Suma Total (Sₙ):</label><input type="number" id="ari-sn" class="input-field" step="any"></div>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <div class="input-group">
+                    <label style="color: var(--clr-primary); font-size: 1rem;"><i class="fa-solid fa-magnifying-glass"></i> ¿Qué deseas calcular? (Incógnita)</label>
+                    <select id="ari-unknown" class="input-field" style="font-size: 1.1rem; font-weight: bold;" onchange="updateAriUI()">
+                        <option value="an">Último Término (aₙ)</option>
+                        <option value="a1">Primer Término (a₁)</option>
+                        <option value="d">Diferencia (d)</option>
+                        <option value="n">Cantidad de Términos (n)</option>
+                        <option value="sn">Suma Total (Sₙ)</option>
+                    </select>
+                </div>
             </div>
-            <button class="btn-primary" onclick="solveMultiArit()"><i class="fa-solid fa-bolt"></i> Calcular Incógnitas</button>
+
+            <p class="helper-text">Llena al menos 3 de los siguientes datos para calcular la incógnita.</p>
+            
+            <div class="grid-2">
+                <div class="input-group" id="grp-ari-a1"><label>Primer Término (a₁):</label><input type="number" id="ari-a1" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-ari-d"><label>Diferencia (d):</label><input type="number" id="ari-d" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-ari-n"><label>Cantidad de Términos (n):</label><input type="number" id="ari-n" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-ari-an" style="display:none;"><label>Último Término (aₙ):</label><input type="number" id="ari-an" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-ari-sn"><label>Suma Total (Sₙ):</label><input type="number" id="ari-sn" class="input-field" step="any"></div>
+            </div>
+            
+            <button class="btn-primary" onclick="solveMultiArit()"><i class="fa-solid fa-calculator"></i> Resolver</button>
             <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearInputs('ari')">Limpiar Datos</button>
             <div id="ari-result"></div>
         </section>
 
         <!-- Progresión Geométrica (Multifuncional) -->
         <section id="tab-geo" class="tab-content">
-            <p class="helper-text"><i class="fa-solid fa-circle-info"></i> Introduce al menos 3 datos conocidos. Deja en blanco los que desees calcular.</p>
-            <div class="grid-2">
-                <div class="input-group"><label>Primer Término (a₁):</label><input type="number" id="geo-a1" class="input-field" step="any"></div>
-                <div class="input-group"><label>Razón (r):</label><input type="number" id="geo-r" class="input-field" step="any"></div>
-                <div class="input-group"><label>Cantidad de Términos (n):</label><input type="number" id="geo-n" class="input-field" step="any"></div>
-                <div class="input-group"><label>Último Término (aₙ):</label><input type="number" id="geo-an" class="input-field" step="any"></div>
-                <div class="input-group"><label>Suma Total (Sₙ):</label><input type="number" id="geo-sn" class="input-field" step="any"></div>
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <div class="input-group">
+                    <label style="color: var(--clr-primary); font-size: 1rem;"><i class="fa-solid fa-magnifying-glass"></i> ¿Qué deseas calcular? (Incógnita)</label>
+                    <select id="geo-unknown" class="input-field" style="font-size: 1.1rem; font-weight: bold;" onchange="updateGeoUI()">
+                        <option value="an">Último Término (aₙ)</option>
+                        <option value="a1">Primer Término (a₁)</option>
+                        <option value="r">Razón Común (r)</option>
+                        <option value="n">Cantidad de Términos (n)</option>
+                        <option value="sn">Suma Total (Sₙ)</option>
+                    </select>
+                </div>
             </div>
-            <button class="btn-primary" onclick="solveMultiGeo()"><i class="fa-solid fa-bolt"></i> Calcular Incógnitas</button>
+
+            <p class="helper-text">Llena al menos 3 de los siguientes datos para calcular la incógnita.</p>
+            
+            <div class="grid-2">
+                <div class="input-group" id="grp-geo-a1"><label>Primer Término (a₁):</label><input type="number" id="geo-a1" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-geo-r"><label>Razón Común (r):</label><input type="number" id="geo-r" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-geo-n"><label>Cantidad de Términos (n):</label><input type="number" id="geo-n" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-geo-an" style="display:none;"><label>Último Término (aₙ):</label><input type="number" id="geo-an" class="input-field" step="any"></div>
+                <div class="input-group" id="grp-geo-sn"><label>Suma Total (Sₙ):</label><input type="number" id="geo-sn" class="input-field" step="any"></div>
+            </div>
+
+            <button class="btn-primary" onclick="solveMultiGeo()"><i class="fa-solid fa-calculator"></i> Resolver</button>
             <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearInputs('geo')">Limpiar Datos</button>
             <div id="geo-result"></div>
         </section>
@@ -230,21 +260,37 @@
         }
 
         // --- Progresión Aritmética Multifuncional ---
+        function updateAriUI() {
+            const unk = document.getElementById('ari-unknown').value;
+            ['a1', 'd', 'n', 'an', 'sn'].forEach(id => {
+                document.getElementById('grp-ari-' + id).style.display = (id === unk) ? 'none' : 'block';
+                document.getElementById('ari-' + id).value = '';
+            });
+            hideResult('ari-result');
+        }
+
         function solveMultiArit() {
+            const unk = document.getElementById('ari-unknown').value;
             let a1 = getVal('ari-a1');
             let d = getVal('ari-d');
             let n = getVal('ari-n');
             let an = getVal('ari-an');
             let sn = getVal('ari-sn');
 
+            // Force the unknown to be null regardless of input
+            if (unk === 'a1') a1 = null;
+            if (unk === 'd') d = null;
+            if (unk === 'n') n = null;
+            if (unk === 'an') an = null;
+            if (unk === 'sn') sn = null;
+
             const givenCount = [a1, d, n, an, sn].filter(v => v !== null).length;
             if (givenCount < 3) {
-                showResult('ari-result', '<strong>Error:</strong> Introduce al menos 3 valores conocidos.', 'error');
+                showResult('ari-result', '<strong>Error:</strong> Introduce al menos 3 valores conocidos en los campos disponibles.', 'error');
                 return;
             }
 
             try {
-                // Brute force / algebraic isolation for missing variables
                 let solved = true;
                 while (solved) {
                     solved = false;
@@ -254,22 +300,16 @@
                     if (a1 === null && an !== null && n !== null && d !== null) { a1 = an - (n - 1) * d; solved = true; }
                     if (d === null && an !== null && a1 !== null && n !== null && n !== 1) { d = (an - a1) / (n - 1); solved = true; }
                     
-                    // Complex deductions
                     if (a1 === null && sn !== null && n !== null && an !== null) { a1 = (2 * sn / n) - an; solved = true; }
                     if (an === null && sn !== null && n !== null && a1 !== null) { an = (2 * sn / n) - a1; solved = true; }
                     if (n === null && sn !== null && a1 !== null && an !== null && (a1+an)!==0) { n = (2 * sn) / (a1 + an); solved = true; }
                     
-                    // Using d and Sn
                     if (sn === null && a1 !== null && d !== null && n !== null) { sn = (n / 2) * (2 * a1 + (n - 1) * d); solved = true; }
                     if (a1 === null && sn !== null && d !== null && n !== null) { a1 = (sn / n) - (d * (n - 1) / 2); solved = true; }
                     if (d === null && sn !== null && a1 !== null && n !== null && n !== 1) { d = (2 * (sn - n * a1)) / (n * (n - 1)); solved = true; }
                     
-                    // Finding n with quadratic (Sn, a1, d)
                     if (n === null && sn !== null && a1 !== null && d !== null && d !== 0) {
-                        // d/2 * n^2 + (a1 - d/2) * n - Sn = 0
-                        const A = d / 2;
-                        const B = a1 - d / 2;
-                        const C = -sn;
+                        const A = d / 2; const B = a1 - d / 2; const C = -sn;
                         const disc = B * B - 4 * A * C;
                         if (disc >= 0) {
                             const n1 = (-B + Math.sqrt(disc)) / (2 * A);
@@ -280,35 +320,54 @@
                     }
                 }
 
-                if (a1 === null || d === null || n === null || an === null || sn === null) {
-                    showResult('ari-result', '<strong>Error:</strong> Los datos proporcionados son insuficientes o matemáticamente inconsistentes.', 'error');
+                const results = { 'a1': a1, 'd': d, 'n': n, 'an': an, 'sn': sn };
+                if (results[unk] === null || isNaN(results[unk])) {
+                    showResult('ari-result', '<strong>Error:</strong> Los datos proporcionados son insuficientes o inconsistentes para calcular esta incógnita.', 'error');
                     return;
                 }
 
-                // Fill inputs to show user
-                document.getElementById('ari-a1').value = +a1.toFixed(4);
-                document.getElementById('ari-d').value = +d.toFixed(4);
-                document.getElementById('ari-n').value = +n.toFixed(4);
-                document.getElementById('ari-an').value = +an.toFixed(4);
-                document.getElementById('ari-sn').value = +sn.toFixed(4);
+                // Fill inputs to show user other calculated values too
+                if(unk !== 'a1' && a1 !== null) document.getElementById('ari-a1').value = +a1.toFixed(4);
+                if(unk !== 'd' && d !== null) document.getElementById('ari-d').value = +d.toFixed(4);
+                if(unk !== 'n' && n !== null) document.getElementById('ari-n').value = +n.toFixed(4);
+                if(unk !== 'an' && an !== null) document.getElementById('ari-an').value = +an.toFixed(4);
+                if(unk !== 'sn' && sn !== null) document.getElementById('ari-sn').value = +sn.toFixed(4);
 
-                showResult('ari-result', '<strong>¡Éxito!</strong> Variables calculadas y rellenadas.', 'success');
+                const labels = { 'a1': 'Primer Término (a₁)', 'd': 'Diferencia (d)', 'n': 'Cantidad de Términos (n)', 'an': 'Último Término (aₙ)', 'sn': 'Suma Total (Sₙ)' };
+                
+                showResult('ari-result', `<div style="font-size:1.2rem;">Resultado para <strong>${labels[unk]}</strong>: <br><span style="font-size:2rem; color:var(--clr-accent); font-weight:bold;">${+(results[unk]).toFixed(4)}</span></div>`, 'success');
             } catch (e) {
-                showResult('ari-result', '<strong>Error de Cálculo.</strong> Verifica los datos ingresados.', 'error');
+                showResult('ari-result', '<strong>Error de Cálculo.</strong> Verifica los datos.', 'error');
             }
         }
 
         // --- Progresión Geométrica Multifuncional ---
+        function updateGeoUI() {
+            const unk = document.getElementById('geo-unknown').value;
+            ['a1', 'r', 'n', 'an', 'sn'].forEach(id => {
+                document.getElementById('grp-geo-' + id).style.display = (id === unk) ? 'none' : 'block';
+                document.getElementById('geo-' + id).value = '';
+            });
+            hideResult('geo-result');
+        }
+
         function solveMultiGeo() {
+            const unk = document.getElementById('geo-unknown').value;
             let a1 = getVal('geo-a1');
             let r = getVal('geo-r');
             let n = getVal('geo-n');
             let an = getVal('geo-an');
             let sn = getVal('geo-sn');
 
+            if (unk === 'a1') a1 = null;
+            if (unk === 'r') r = null;
+            if (unk === 'n') n = null;
+            if (unk === 'an') an = null;
+            if (unk === 'sn') sn = null;
+
             const givenCount = [a1, r, n, an, sn].filter(v => v !== null).length;
             if (givenCount < 3) {
-                showResult('geo-result', '<strong>Error:</strong> Introduce al menos 3 valores conocidos.', 'error');
+                showResult('geo-result', '<strong>Error:</strong> Introduce al menos 3 valores conocidos en los campos disponibles.', 'error');
                 return;
             }
 
@@ -323,23 +382,25 @@
                     if (r === null && an !== null && a1 !== null && n !== null && a1 !== 0) { r = Math.pow(an / a1, 1 / (n - 1)); solved = true; }
                     if (n === null && an !== null && a1 !== null && r !== null && a1 !== 0 && r > 0 && r !== 1) { n = Math.log(an / a1) / Math.log(r) + 1; solved = true; }
                     
-                    // Sn based
                     if (a1 === null && sn !== null && r !== null && n !== null) { a1 = r === 1 ? sn / n : sn * (r - 1) / (Math.pow(r, n) - 1); solved = true; }
                     if (sn === null && a1 !== null && r !== null && an !== null && r !== 1) { sn = (an * r - a1) / (r - 1); solved = true; }
                 }
 
-                if (a1 === null || r === null || n === null || an === null || sn === null || isNaN(a1) || isNaN(r)) {
+                const results = { 'a1': a1, 'r': r, 'n': n, 'an': an, 'sn': sn };
+                if (results[unk] === null || isNaN(results[unk])) {
                     showResult('geo-result', '<strong>Error:</strong> Los datos proporcionados son insuficientes o generan resultados complejos/inconsistentes.', 'error');
                     return;
                 }
 
-                document.getElementById('geo-a1').value = +a1.toFixed(4);
-                document.getElementById('geo-r').value = +r.toFixed(4);
-                document.getElementById('geo-n').value = +n.toFixed(4);
-                document.getElementById('geo-an').value = +an.toFixed(4);
-                document.getElementById('geo-sn').value = +sn.toFixed(4);
+                if(unk !== 'a1' && a1 !== null) document.getElementById('geo-a1').value = +a1.toFixed(4);
+                if(unk !== 'r' && r !== null) document.getElementById('geo-r').value = +r.toFixed(4);
+                if(unk !== 'n' && n !== null) document.getElementById('geo-n').value = +n.toFixed(4);
+                if(unk !== 'an' && an !== null) document.getElementById('geo-an').value = +an.toFixed(4);
+                if(unk !== 'sn' && sn !== null) document.getElementById('geo-sn').value = +sn.toFixed(4);
 
-                showResult('geo-result', '<strong>¡Éxito!</strong> Variables calculadas y rellenadas.', 'success');
+                const labels = { 'a1': 'Primer Término (a₁)', 'r': 'Razón Común (r)', 'n': 'Cantidad de Términos (n)', 'an': 'Último Término (aₙ)', 'sn': 'Suma Total (Sₙ)' };
+                
+                showResult('geo-result', `<div style="font-size:1.2rem;">Resultado para <strong>${labels[unk]}</strong>: <br><span style="font-size:2rem; color:var(--clr-accent); font-weight:bold;">${+(results[unk]).toFixed(4)}</span></div>`, 'success');
             } catch (e) {
                 showResult('geo-result', '<strong>Error de Cálculo.</strong>', 'error');
             }

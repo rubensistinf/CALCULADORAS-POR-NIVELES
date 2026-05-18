@@ -4,22 +4,32 @@
 
 // Inject Floating Manual Button
 function injectFloatingManual() {
-    const btn = document.createElement('a');
-    
     let path = window.location.pathname.toLowerCase();
     let decodedPath = decodeURIComponent(path);
     
-    let targetParam = '?print=all';
-    if (decodedPath.includes('1. nivel')) targetParam = '?print=1';
-    else if (decodedPath.includes('2. nivel')) targetParam = '?print=2';
-    else if (decodedPath.includes('3. nivel')) targetParam = '?print=3';
-    else if (decodedPath.includes('4. nivel')) targetParam = '?print=4';
+    // Detectar en qué nivel estamos basado en la ruta estricta
+    const isNivel1 = decodedPath.includes('/1. nivel');
+    const isNivel2 = decodedPath.includes('/2. nivel');
+    const isNivel3 = decodedPath.includes('/3. nivel');
+    const isNivel4 = decodedPath.includes('/4. nivel');
+    const isGrafica = decodedPath.includes('/grafica/');
+    const isManual = decodedPath.includes('/6. manual/');
 
-    if (decodedPath.includes('nivel') || decodedPath.includes('manual')) {
-        btn.href = '../6. manual/index.html' + targetParam;
-    } else {
-        btn.href = '6. manual/index.html' + targetParam;
-    }
+    // Solo mostrar el botón del PDF si estamos estrictamente dentro de una calculadora
+    if (!isNivel1 && !isNivel2 && !isNivel3 && !isNivel4 && !isGrafica) return;
+
+    const btn = document.createElement('a');
+    
+    let targetParam = '?print=all';
+    if (isNivel1) targetParam = '?print=1';
+    else if (isNivel2) targetParam = '?print=2';
+    else if (isNivel3) targetParam = '?print=3';
+    else if (isNivel4) targetParam = '?print=4';
+    else if (isGrafica) targetParam = '?print=5';
+
+    // Como estamos garantizados a estar dentro de una subcarpeta (Nivel 1-4 o Grafica), 
+    // la ruta relativa hacia el manual siempre es subir un nivel (../)
+    btn.href = '../6. manual/index.html' + targetParam;
 
     btn.className = 'floating-manual-btn';
     btn.innerHTML = `

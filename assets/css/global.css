@@ -157,7 +157,7 @@ select.input-field option {
 .floating-manual-btn {
     position: fixed;
     bottom: 30px;
-    right: 30px;
+    left: 30px;
     background: linear-gradient(135deg, #EF233C, #D90429);
     color: white;
     width: 60px;
@@ -182,7 +182,7 @@ select.input-field option {
 
 .floating-manual-btn .tooltip {
     position: absolute;
-    right: 75px;
+    left: 75px;
     background: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 6px 12px;
@@ -390,7 +390,7 @@ select.input-field option {
         height: 50px !important;
         font-size: 20px !important;
         bottom: 15px !important;
-        right: 15px !important;
+        left: 15px !important;
     }
 
     .result-box {

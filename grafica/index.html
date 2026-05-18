@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Gráfica Pro | EduConectRuben</title>
+<link rel="stylesheet" href="../assets/css/global.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="manifest" href="/instalar/manifest.json">
+<link rel="icon" type="image/png" href="/instalar/icon-192.png">
+<style>
+  body { margin: 0; }
+  .app-wrap { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  #graph-canvas { background: #0a0f1e; border-radius: 12px; border: 1px solid rgba(0,180,216,0.3); display: block; width: 100%; cursor: crosshair; }
+  .panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  @media(max-width:700px){ .panel { grid-template-columns: 1fr; } }
+  .ctrl-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; }
+  .ctrl-box h4 { margin: 0 0 12px; color: var(--clr-primary); font-size: 1rem; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .row label { font-size: 0.85rem; color: var(--clr-text-muted); display: block; margin-bottom: 4px; }
+  .row .ig { flex: 1; min-width: 70px; }
+  select.input-field, input.input-field { font-size: 0.95rem; padding: 8px 10px; }
+  .curve-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 20px; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  #result-box { margin-top: 16px; }
+  .coord-display { font-family: monospace; font-size: 0.8rem; color: var(--clr-text-muted); text-align: right; margin-top: 4px; }
+</style>
+</head>
+<body>
+<nav class="top-nav">
+  <div class="nav-brand"><i class="fa-solid fa-chart-line"></i> Calculadora Gráfica Pro</div>
+  <a href="../index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+</nav>
+
+<div class="app-wrap">
+  <canvas id="graph-canvas" height="480"></canvas>
+  <div class="coord-display" id="coord-display">x: 0, y: 0</div>
+
+  <div class="panel">
+    <!-- Curvas -->
+    <div class="ctrl-box">
+      <h4><i class="fa-solid fa-shapes"></i> Graficar Curva</h4>
+      <div class="row">
+        <div class="ig">
+          <label>Tipo de Curva</label>
+          <select id="curve-type" class="input-field" onchange="updateInputs()" style="width:100%">
+            <option value="line">Recta: y = mx + b</option>
+            <option value="parabola">Parábola: y = ax² + bx + c</option>
+            <option value="circle">Circunferencia: (x-h)²+(y-k)²=r²</option>
+            <option value="ellipse">Elipse: x²/a²+y²/b²=1</option>
+            <option value="hyperbola">Hipérbola: x²/a²-y²/b²=1</option>
+            <option value="intersect">Intersección 2 Rectas</option>
+          </select>
+        </div>
+      </div>
+      <div id="param-inputs" class="row"></div>
+      <div class="row">
+        <button class="btn-primary" onclick="addCurve()" style="flex:1"><i class="fa-solid fa-plus"></i> Agregar</button>
+        <button class="btn-primary" onclick="clearAll()" style="background:rgba(255,255,255,0.1); flex:1">Limpiar Todo</button>
+      </div>
+      <div class="curve-legend" id="curve-legend"></div>
+    </div>
+
+    <!-- Cálculo -->
+    <div class="ctrl-box">
+      <h4><i class="fa-solid fa-infinity"></i> Cálculo Diferencial</h4>
+      <div>
+        <label style="font-size:0.85rem;color:var(--clr-text-muted);">Función f(x) (usa x, ^, sin, cos, etc.)</label>
+        <input type="text" id="calc-fx" class="input-field" placeholder="Ej: x^3 - 2*x + 1" style="width:100%;margin-top:4px;">
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <div class="ig">
+          <label>Punto x₀ (Derivada / Límite)</label>
+          <input type="number" id="calc-x0" class="input-field" value="1" step="any">
+        </div>
+        <div class="ig">
+          <label>Δ (h para límite)</label>
+          <input type="number" id="calc-h" class="input-field" value="0.0001" step="any">
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn-primary" onclick="calcDerivative()" style="flex:1">f'(x₀)</button>
+        <button class="btn-primary" onclick="calcLimit()" style="background:rgba(0,245,212,0.2);color:var(--clr-accent);flex:1">lím f(x)</button>
+        <button class="btn-primary" onclick="graphFx()" style="background:rgba(160,32,240,0.2);color:#c77dff;flex:1">Graficar f(x)</button>
+      </div>
+      <div id="result-box"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/global.js"></script>
+<script>
+const canvas = document.getElementById('graph-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, ox, oy, scale = 50;
+const COLORS = ['#00f5d4','#00b4d8','#f72585','#ffd60a','#a020f0','#ff6b6b','#06d6a0','#118ab2'];
+let curves = [];
+
+function resize() {
+  W = canvas.offsetWidth; H = canvas.height = W * 0.55;
+  canvas.width = W; ox = W/2; oy = H/2;
+  draw();
+}
+window.addEventListener('resize', resize);
+
+function toC(x, y) { return [ox + x*scale, oy - y*scale]; }
+function fromC(px, py) { return [(px-ox)/scale, (oy-py)/scale]; }
+
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+  ctx.lineWidth = 1;
+  for(let x=ox%scale; x<W; x+=scale){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for(let y=oy%scale; y<H; y+=scale){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  // Axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0,oy); ctx.lineTo(W,oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox,0); ctx.lineTo(ox,H); ctx.stroke();
+  // Labels
+  ctx.fillStyle='rgba(255,255,255,0.4)'; ctx.font='11px monospace';
+  for(let i=Math.ceil(-ox/scale); i<=Math.floor((W-ox)/scale); i++){
+    if(i===0) continue;
+    const [cx]=toC(i,0); ctx.fillText(i, cx-6, oy+14);
+  }
+  for(let j=Math.ceil(-oy/scale); j<=Math.floor(oy/scale); j++){
+    if(j===0) continue;
+    const [,cy]=toC(0,j); ctx.fillText(j, ox+4, cy+4);
+  }
+  ctx.fillText('0', ox+4, oy+14);
+  // Draw curves
+  curves.forEach(c => drawCurve(c));
+}
+
+function drawCurve(c) {
+  ctx.strokeStyle = c.color; ctx.lineWidth = 2.5; ctx.lineJoin='round';
+  const xMin = -ox/scale, xMax=(W-ox)/scale;
+  if(c.type==='line'){
+    const {m,b}=c.params;
+    ctx.beginPath();
+    ctx.moveTo(...toC(xMin, m*xMin+b));
+    ctx.lineTo(...toC(xMax, m*xMax+b));
+    ctx.stroke();
+  } else if(c.type==='parabola'||c.type==='fx'){
+    ctx.beginPath(); let first=true;
+    for(let px=0; px<=W; px+=1){
+      const x=(px-ox)/scale;
+      let y;
+      if(c.type==='parabola'){ const{a,b,cc}=c.params; y=a*x*x+b*x+cc; }
+      else { try{ y=safeEval(c.params.expr,x); }catch{continue;} }
+      if(isNaN(y)||Math.abs(y)>1e6) { first=true; continue; }
+      const [cx,cy]=toC(x,y);
+      if(first){ ctx.moveTo(cx,cy); first=false; } else ctx.lineTo(cx,cy);
+    }
+    ctx.stroke();
+  } else if(c.type==='circle'){
+    const{h,k,r}=c.params;
+    const[cx,cy]=toC(h,k);
+    ctx.beginPath(); ctx.arc(cx,cy,r*scale,0,2*Math.PI); ctx.stroke();
+  } else if(c.type==='ellipse'){
+    const{a,b}=c.params;
+    ctx.beginPath(); ctx.ellipse(ox,oy,a*scale,b*scale,0,0,2*Math.PI); ctx.stroke();
+  } else if(c.type==='hyperbola'){
+    const{a,b}=c.params;
+    ctx.beginPath(); let first=true;
+    for(let px=0;px<=W;px++){
+      const x=(px-ox)/scale; const under=x*x/(a*a)-1;
+      if(under<0){first=true;continue;}
+      const y=b*Math.sqrt(under);
+      const[cx,cy]=toC(x,y);
+      if(first){ctx.moveTo(cx,cy);first=false;} else ctx.lineTo(cx,cy);
+    }
+    ctx.stroke();
+    ctx.beginPath(); first=true;
+    for(let px=0;px<=W;px++){
+      const x=(px-ox)/scale; const under=x*x/(a*a)-1;
+      if(under<0){first=true;continue;}
+      const y=-b*Math.sqrt(under);
+      const[cx,cy]=toC(x,y);
+      if(first){ctx.moveTo(cx,cy);first=false;} else ctx.lineTo(cx,cy);
+    }
+    ctx.stroke();
+  } else if(c.type==='intersect'){
+    const{m1,b1,m2,b2}=c.params;
+    const xMin=-ox/scale, xMax=(W-ox)/scale;
+    ctx.strokeStyle=c.color; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(...toC(xMin,m1*xMin+b1)); ctx.lineTo(...toC(xMax,m1*xMax+b1)); ctx.stroke();
+    ctx.strokeStyle=COLORS[(curves.indexOf(c)+1)%COLORS.length];
+    ctx.beginPath(); ctx.moveTo(...toC(xMin,m2*xMin+b2)); ctx.lineTo(...toC(xMax,m2*xMax+b2)); ctx.stroke();
+    // intersection point
+    if(m1!==m2){
+      const xi=(b2-b1)/(m1-m2), yi=m1*xi+b1;
+      const[cx,cy]=toC(xi,yi);
+      ctx.fillStyle='#ffd60a'; ctx.beginPath(); ctx.arc(cx,cy,6,0,2*Math.PI); ctx.fill();
+      ctx.fillStyle='#fff'; ctx.font='12px sans-serif';
+      ctx.fillText(`(${xi.toFixed(2)}, ${yi.toFixed(2)})`, cx+8, cy-8);
+    }
+  }
+}
+
+function pInput(id, lbl, val='') {
+  return `<div class="ig"><label>${lbl}</label><input type="number" id="${id}" class="input-field" value="${val}" step="any"></div>`;
+}
+function updateInputs() {
+  const t = document.getElementById('curve-type').value;
+  const el = document.getElementById('param-inputs');
+  if(t==='line') el.innerHTML = pInput('p-m','Pendiente (m)','1') + pInput('p-b','Intercepto (b)','0');
+  else if(t==='parabola') el.innerHTML = pInput('p-a','a','1') + pInput('p-b','b','0') + pInput('p-c','c','0');
+  else if(t==='circle') el.innerHTML = pInput('p-h','Centro h','0') + pInput('p-k','Centro k','0') + pInput('p-r','Radio r','3');
+  else if(t==='ellipse') el.innerHTML = pInput('p-a','Semi-eje a','4') + pInput('p-b','Semi-eje b','2');
+  else if(t==='hyperbola') el.innerHTML = pInput('p-a','a','2') + pInput('p-b','b','1');
+  else if(t==='intersect') el.innerHTML = pInput('p-m1','m₁','1') + pInput('p-b1','b₁','0') + pInput('p-m2','m₂','-1') + pInput('p-b2','b₂','2');
+}
+
+function gv(id){ const el=document.getElementById(id); return el ? parseFloat(el.value)||0 : 0; }
+
+function addCurve() {
+  const t = document.getElementById('curve-type').value;
+  const color = COLORS[curves.length % COLORS.length];
+  let c = {type:t, color};
+  let label='';
+  if(t==='line'){ c.params={m:gv('p-m'),b:gv('p-b')}; label=`y = ${gv('p-m')}x + ${gv('p-b')}`; }
+  else if(t==='parabola'){ c.params={a:gv('p-a'),b:gv('p-b'),cc:gv('p-c')}; label=`y=${gv('p-a')}x²+${gv('p-b')}x+${gv('p-c')}`; }
+  else if(t==='circle'){ c.params={h:gv('p-h'),k:gv('p-k'),r:gv('p-r')}; label=`Circ h=${gv('p-h')},k=${gv('p-k')},r=${gv('p-r')}`; }
+  else if(t==='ellipse'){ c.params={a:gv('p-a'),b:gv('p-b')}; label=`Elipse a=${gv('p-a')},b=${gv('p-b')}`; }
+  else if(t==='hyperbola'){ c.params={a:gv('p-a'),b:gv('p-b')}; label=`Hipérb a=${gv('p-a')},b=${gv('p-b')}`; }
+  else if(t==='intersect'){ c.params={m1:gv('p-m1'),b1:gv('p-b1'),m2:gv('p-m2'),b2:gv('p-b2')}; label=`Intersección`; }
+  curves.push(c);
+  const leg=document.getElementById('curve-legend');
+  leg.innerHTML+=`<div class="legend-item"><div class="legend-dot" style="background:${color}"></div>${label}</div>`;
+  draw();
+}
+
+function clearAll(){ curves=[]; document.getElementById('curve-legend').innerHTML=''; draw(); }
+
+// Derivative & Limit
+function safeEval(expr, x) {
+  const fn = new Function('x','Math', `with(Math){ return ${expr.replace(/\^/g,'**')}; }`);
+  return fn(x, Math);
+}
+function calcDerivative() {
+  const expr=document.getElementById('calc-fx').value.trim();
+  const x0=parseFloat(document.getElementById('calc-x0').value);
+  const h=parseFloat(document.getElementById('calc-h').value)||0.0001;
+  if(!expr){ showResult('result-box','Ingresa f(x)','error'); return; }
+  try {
+    const deriv = (safeEval(expr,x0+h) - safeEval(expr,x0-h)) / (2*h);
+    showResult('result-box',`<strong>f'(${x0})</strong> = <span style="font-size:1.5rem;color:var(--clr-accent);font-weight:bold;">${deriv.toFixed(6)}</span>`,'success');
+  } catch(e){ showResult('result-box','Error: Revisa la función.','error'); }
+}
+function calcLimit() {
+  const expr=document.getElementById('calc-fx').value.trim();
+  const x0=parseFloat(document.getElementById('calc-x0').value);
+  const h=parseFloat(document.getElementById('calc-h').value)||0.0001;
+  if(!expr){ showResult('result-box','Ingresa f(x)','error'); return; }
+  try {
+    const lRight = safeEval(expr, x0+h);
+    const lLeft  = safeEval(expr, x0-h);
+    const lim = (lRight+lLeft)/2;
+    const exists = Math.abs(lRight-lLeft) < 0.01;
+    showResult('result-box',
+      `lím f(x) cuando x→${x0} = <span style="font-size:1.5rem;color:var(--clr-accent);font-weight:bold;">${lim.toFixed(6)}</span><br>
+      <small style="color:${exists?'#00f5d4':'#ef233c'}">${exists?'✓ Límite existe':'⚠ Límite puede no existir (discontinuidad)'}</small>`
+    ,'success');
+  } catch(e){ showResult('result-box','Error: Revisa la función.','error'); }
+}
+function graphFx() {
+  const expr=document.getElementById('calc-fx').value.trim();
+  if(!expr){ showResult('result-box','Ingresa f(x)','error'); return; }
+  const color=COLORS[curves.length%COLORS.length];
+  curves.push({type:'fx',color,params:{expr}});
+  const leg=document.getElementById('curve-legend');
+  leg.innerHTML+=`<div class="legend-item"><div class="legend-dot" style="background:${color}"></div>f(x)=${expr}</div>`;
+  draw();
+  showResult('result-box',`<span style="color:var(--clr-accent)">✓ Curva graficada: f(x) = ${expr}</span>`,'success');
+}
+
+// Mouse coords
+canvas.addEventListener('mousemove', e => {
+  const rect=canvas.getBoundingClientRect();
+  const px=(e.clientX-rect.left)*(W/rect.width);
+  const py=(e.clientY-rect.top)*(H/rect.height);
+  const[x,y]=fromC(px,py);
+  document.getElementById('coord-display').textContent=`x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`;
+});
+
+// Zoom
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  scale = e.deltaY<0 ? Math.min(scale*1.1,300) : Math.max(scale/1.1,10);
+  draw();
+},{passive:false});
+
+// Init
+updateInputs();
+resize();
+</script>
+<script src="/instalar/pwa.js"></script>
+</body>
+</html>

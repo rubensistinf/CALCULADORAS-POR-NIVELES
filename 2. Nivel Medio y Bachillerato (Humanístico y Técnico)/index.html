@@ -138,7 +138,7 @@
                 </div>
             </div>
 
-            <p class="helper-text">Llena al menos 3 de los siguientes datos para calcular la incógnita.</p>
+            <p class="helper-text" id="ari-helper">Llena los 3 datos solicitados para calcular la incógnita.</p>
             
             <div class="grid-2">
                 <div class="input-group" id="grp-ari-a1"><label>Primer Término (a₁):</label><input type="number" id="ari-a1" class="input-field" step="any"></div>
@@ -168,7 +168,7 @@
                 </div>
             </div>
 
-            <p class="helper-text">Llena al menos 3 de los siguientes datos para calcular la incógnita.</p>
+            <p class="helper-text" id="geo-helper">Llena los 3 datos solicitados para calcular la incógnita.</p>
             
             <div class="grid-2">
                 <div class="input-group" id="grp-geo-a1"><label>Primer Término (a₁):</label><input type="number" id="geo-a1" class="input-field" step="any"></div>
@@ -324,8 +324,17 @@
         // --- Progresión Aritmética Multifuncional ---
         function updateAriUI() {
             const unk = document.getElementById('ari-unknown').value;
+            const requiredFields = {
+                'an': ['a1', 'd', 'n'],
+                'a1': ['an', 'd', 'n'],
+                'd':  ['an', 'a1', 'n'],
+                'n':  ['an', 'a1', 'd'],
+                'sn': ['a1', 'd', 'n']
+            };
+            const toShow = requiredFields[unk];
+            
             ['a1', 'd', 'n', 'an', 'sn'].forEach(id => {
-                document.getElementById('grp-ari-' + id).style.display = (id === unk) ? 'none' : 'block';
+                document.getElementById('grp-ari-' + id).style.display = toShow.includes(id) ? 'block' : 'none';
                 document.getElementById('ari-' + id).value = '';
             });
             hideResult('ari-result');
@@ -406,8 +415,17 @@
         // --- Progresión Geométrica Multifuncional ---
         function updateGeoUI() {
             const unk = document.getElementById('geo-unknown').value;
+            const requiredFields = {
+                'an': ['a1', 'r', 'n'],
+                'a1': ['an', 'r', 'n'],
+                'r':  ['an', 'a1', 'n'],
+                'n':  ['an', 'a1', 'r'],
+                'sn': ['a1', 'r', 'n']
+            };
+            const toShow = requiredFields[unk];
+
             ['a1', 'r', 'n', 'an', 'sn'].forEach(id => {
-                document.getElementById('grp-geo-' + id).style.display = (id === unk) ? 'none' : 'block';
+                document.getElementById('grp-geo-' + id).style.display = toShow.includes(id) ? 'block' : 'none';
                 document.getElementById('geo-' + id).value = '';
             });
             hideResult('geo-result');
@@ -570,6 +588,12 @@
             `;
             showResult('sys-result', html, 'success');
         }
+        
+        // Initialize UI
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAriUI();
+            updateGeoUI();
+        });
     </script>
 
     <!-- PWA Installation Script -->

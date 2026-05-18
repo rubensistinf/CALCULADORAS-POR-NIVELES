@@ -4,10 +4,9 @@ installButton.id = 'pwa-install-button';
 installButton.innerHTML = '<i class="fa-solid fa-download" style="margin-right: 8px;"></i> Instalar App';
 Object.assign(installButton.style, {
   position: 'fixed',
-  bottom: '40px',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  padding: '14px 32px',
+  bottom: '30px',
+  right: '30px',
+  padding: '10px 20px',
   backgroundColor: '#2A8CFF',
   background: 'linear-gradient(135deg, #449CFF, #1E7BFF)',
   color: '#FFFFFF',
@@ -15,13 +14,13 @@ Object.assign(installButton.style, {
   borderRadius: '30px',
   fontFamily: "'Poppins', sans-serif",
   fontWeight: '600',
-  fontSize: '1.2rem',
+  fontSize: '1rem',
   cursor: 'pointer',
-  display: 'none', // Oculto por defecto
+  display: 'flex', // Visible por defecto para pruebas locales
   alignItems: 'center',
   justifyContent: 'center',
   zIndex: '9999',
-  boxShadow: '0 10px 30px rgba(42, 140, 255, 0.4), inset 0 2px 5px rgba(255,255,255,0.3)',
+  boxShadow: '0 8px 25px rgba(42, 140, 255, 0.4), inset 0 2px 5px rgba(255,255,255,0.3)',
   transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
   letterSpacing: '0.5px'
 });
@@ -29,16 +28,16 @@ document.body.appendChild(installButton);
 
 // Efecto hover (añadido vía JS)
 installButton.addEventListener('mouseenter', () => {
-    installButton.style.transform = 'translateX(-50%) translateY(-5px)';
-    installButton.style.boxShadow = '0 15px 35px rgba(42, 140, 255, 0.6), inset 0 2px 5px rgba(255,255,255,0.4)';
+    installButton.style.transform = 'translateY(-5px)';
+    installButton.style.boxShadow = '0 12px 30px rgba(42, 140, 255, 0.6), inset 0 2px 5px rgba(255,255,255,0.4)';
 });
 installButton.addEventListener('mouseleave', () => {
-    installButton.style.transform = 'translateX(-50%) translateY(0)';
-    installButton.style.boxShadow = '0 10px 30px rgba(42, 140, 255, 0.4), inset 0 2px 5px rgba(255,255,255,0.3)';
+    installButton.style.transform = 'translateY(0)';
+    installButton.style.boxShadow = '0 8px 25px rgba(42, 140, 255, 0.4), inset 0 2px 5px rgba(255,255,255,0.3)';
 });
 
 // Manejo del evento de instalación
-let deferredPrompt;
+let deferredPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (e) => {
   console.log('[PWA] Evento beforeinstallprompt recibido');
@@ -48,21 +47,14 @@ window.addEventListener('beforeinstallprompt', (e) => {
   
   // 2. Guardar el evento para usarlo luego
   deferredPrompt = e;
-  
-  // 3. Mostrar NUESTRO botón de instalación
-  installButton.style.display = 'flex';
-  
-  // 4. Opcional: Ocultar después de 40 segundos
-  setTimeout(() => {
-    if (installButton.style.display === 'flex') {
-      installButton.style.display = 'none';
-    }
-  }, 40000);
 });
 
 // Manejo del clic en nuestro botón
 installButton.addEventListener('click', async () => {
-  if (!deferredPrompt) return;
+  if (!deferredPrompt) {
+      alert("⚠️ Para instalar la App en tu dispositivo, primero debes subir esta página a Internet (ej. Netlify).");
+      return;
+  }
   
   console.log('[PWA] Mostrando diálogo de instalación');
   

@@ -333,11 +333,11 @@
             let expr = document.getElementById('logic-expr').value.trim();
             if(!expr) { showResult('logic-result', 'Error: Ingresa una expresión lógica.', 'error'); return; }
             
-            // Detect variables used
+            // Detect variables used (using \b to avoid matching 'r' in 'OR' or 'XOR')
             const vars = [];
-            if(/p/i.test(expr)) vars.push('p');
-            if(/q/i.test(expr)) vars.push('q');
-            if(/r/i.test(expr)) vars.push('r');
+            if(/\bp\b/i.test(expr)) vars.push('p');
+            if(/\bq\b/i.test(expr)) vars.push('q');
+            if(/\br\b/i.test(expr)) vars.push('r');
             
             if(vars.length === 0) {
                 showResult('logic-result', 'Error: Usa al menos una variable (p, q, r).', 'error'); return;

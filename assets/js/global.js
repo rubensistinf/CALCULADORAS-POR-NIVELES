@@ -5,13 +5,20 @@
 // Inject Floating Manual Button
 function injectFloatingManual() {
     const btn = document.createElement('a');
-    btn.href = '../6. manual/index.html'; // Adjust relative path dynamically if needed
     
     let path = window.location.pathname.toLowerCase();
-    if (path.includes('/nivel') || path.includes('/manual') || path.includes('todos los niveles')) {
-        btn.href = '../6. manual/index.html';
+    let decodedPath = decodeURIComponent(path);
+    
+    let targetParam = '?print=all';
+    if (decodedPath.includes('1. nivel')) targetParam = '?print=1';
+    else if (decodedPath.includes('2. nivel')) targetParam = '?print=2';
+    else if (decodedPath.includes('3. nivel')) targetParam = '?print=3';
+    else if (decodedPath.includes('4. nivel')) targetParam = '?print=4';
+
+    if (decodedPath.includes('nivel') || decodedPath.includes('manual')) {
+        btn.href = '../6. manual/index.html' + targetParam;
     } else {
-        btn.href = '6. manual/index.html';
+        btn.href = '6. manual/index.html' + targetParam;
     }
 
     btn.className = 'floating-manual-btn';

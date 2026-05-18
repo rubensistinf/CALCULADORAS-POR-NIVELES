@@ -52,7 +52,7 @@
             <p>Guía oficial de la Suite de Calculadoras Profesionales EduConectRuben v2.0</p>
         </div>
 
-        <div class="doc-section">
+        <div class="doc-section" id="man-nivel1">
             <h2><i class="fa-solid fa-calculator"></i> Nivel 1: Básico</h2>
             <p>Este módulo está diseñado para operaciones cotidianas y fundamentos matemáticos. Incluye:</p>
             <ul>
@@ -62,7 +62,7 @@
             </ul>
         </div>
 
-        <div class="doc-section">
+        <div class="doc-section" id="man-nivel2">
             <h2><i class="fa-solid fa-square-root-variable"></i> Nivel 2: Medio y Bachillerato</h2>
             <p>Herramientas especializadas para estudiantes de secundaria y nivelación técnica.</p>
             <ul>
@@ -74,7 +74,7 @@
             </ul>
         </div>
 
-        <div class="doc-section">
+        <div class="doc-section" id="man-nivel3">
             <h2><i class="fa-solid fa-chart-pie"></i> Nivel 3: Técnico y Preuniversitario</h2>
             <p>Módulo avanzado para álgebra lineal, análisis de datos y geometría analítica.</p>
             <ul>
@@ -85,7 +85,7 @@
             </ul>
         </div>
 
-        <div class="doc-section">
+        <div class="doc-section" id="man-nivel4">
             <h2><i class="fa-solid fa-laptop-code"></i> Nivel 4: Ingeniería y Sistemas</h2>
             <p>Herramientas exclusivas para el área de ciencias de la computación, matemáticas discretas y programación.</p>
             <ul>
@@ -115,5 +115,30 @@
     </main>
 
     <script src="../assets/js/global.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const printLvl = params.get('print');
+            
+            if (printLvl && printLvl !== 'all') {
+                // Ocultar todas las secciones que no sean el nivel actual ni las adicionales
+                document.querySelectorAll('.doc-section').forEach(sec => {
+                    if (sec.id && sec.id.startsWith('man-nivel') && sec.id !== 'man-nivel' + printLvl) {
+                        sec.style.display = 'none';
+                    }
+                });
+                // Actualizar el título
+                const subtitle = document.querySelector('.doc-header p');
+                if(subtitle) subtitle.innerHTML = `Guía Específica de la Suite Pro - <strong>Nivel ${printLvl}</strong>`;
+            }
+
+            // Disparar el diálogo de impresión automáticamente si hay un query param
+            if (printLvl) {
+                setTimeout(() => {
+                    window.print();
+                }, 800);
+            }
+        });
+    </script>
 </body>
 </html>

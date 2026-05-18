@@ -1,11 +1,12 @@
 {
-  "name": "Mi Aplicacion",
-  "short_name": "App",
+  "name": "Calculadoras Educativas Pro",
+  "short_name": "Calculadoras",
+  "description": "Suite profesional de calculadoras multifuncionales para estudiantes e ingenieros: Aritmética, Geometría Analítica, Sistemas de Ecuaciones, Lógica Proposicional y más.",
   "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#3367D6",
+  "background_color": "#0a192f",
+  "theme_color": "#00b4d8",
   "icons": [
     {
       "src": "icon-192.png",

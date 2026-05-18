@@ -57,6 +57,7 @@
     <main class="app-container glass-panel">
         <div class="tabs-container">
             <button class="tab-btn active" data-target="tab-prog">Calculadora Programador</button>
+            <button class="tab-btn" data-target="tab-logic">Lógica y Tablas de Verdad</button>
             <button class="tab-btn" data-target="tab-info">Conversión de Unidades</button>
         </div>
 
@@ -135,6 +136,38 @@
             </div>
         </section>
 
+        <!-- Lógica Proposicional -->
+        <section id="tab-logic" class="tab-content">
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <p class="helper-text" style="text-align:left;">
+                    <strong>Generador de Tablas de Verdad</strong><br>
+                    Usa las variables <code>p, q, r</code>. Puedes escribir usando los botones o teclado.<br>
+                </p>
+                
+                <div class="input-group">
+                    <input type="text" id="logic-expr" class="input-field" placeholder="Ej: (p AND q) OR (NOT r)" style="font-family: var(--font-mono); font-size: 1.2rem;">
+                </div>
+                
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px; justify-content:center;">
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(' AND ')">AND (∧)</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(' OR ')">OR (∨)</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(' NOT ')">NOT (~)</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(' -> ')">IMPLICA (→)</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(' <-> ')">BICOND. (↔)</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(' XOR ')">XOR (⊕)</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic('p')">p</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic('q')">q</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic('r')">r</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic('(')">(</button>
+                    <button class="btn-c bit" style="padding:8px 15px;" onclick="addLogic(')')">)</button>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="solveLogic()"><i class="fa-solid fa-table"></i> Generar Tabla de Verdad</button>
+            <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearSection('tab-logic', 'logic-result')">Limpiar Datos</button>
+            <div id="logic-result"></div>
+        </section>
+
         <!-- Conversión Informática -->
         <section id="tab-info" class="tab-content">
             <p class="helper-text">Conversión de unidades de almacenamiento de datos</p>
@@ -155,6 +188,7 @@
                 </div>
             </div>
             <button class="btn-primary" onclick="solveInfo()"><i class="fa-solid fa-bolt"></i> Convertir a Todas las Unidades</button>
+            <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearSection('tab-info', 'info-result')">Limpiar Datos</button>
             <div id="info-result"></div>
         </section>
 
@@ -288,6 +322,84 @@
             `;
             showResult('info-result', html, 'success');
         }
+        // --- LÓGICA PROPOSICIONAL ---
+        function addLogic(str) {
+            const el = document.getElementById('logic-expr');
+            el.value += str;
+            el.focus();
+        }
+
+        function solveLogic() {
+            let expr = document.getElementById('logic-expr').value.trim();
+            if(!expr) { showResult('logic-result', 'Error: Ingresa una expresión lógica.', 'error'); return; }
+            
+            // Detect variables used
+            const vars = [];
+            if(/p/i.test(expr)) vars.push('p');
+            if(/q/i.test(expr)) vars.push('q');
+            if(/r/i.test(expr)) vars.push('r');
+            
+            if(vars.length === 0) {
+                showResult('logic-result', 'Error: Usa al menos una variable (p, q, r).', 'error'); return;
+            }
+
+            // Convert logical operators to JS
+            let jsExpr = expr.toLowerCase()
+                .replace(/<->/g, ' === ')
+                .replace(/->/g, ' <= ') // false <= false (T), false <= true (T), true <= false (F), true <= true (T). Works for implies!
+                .replace(/\band\b/g, ' && ')
+                .replace(/\bor\b/g, ' || ')
+                .replace(/\bxor\b/g, ' !== ') // for booleans, XOR is !==
+                .replace(/\bnot\b/g, ' ! ')
+                .replace(/~/g, ' ! ');
+
+            try {
+                // Test evaluation syntax
+                new Function('p', 'q', 'r', 'return ' + jsExpr);
+            } catch(e) {
+                showResult('logic-result', 'Error de sintaxis en la expresión. Revisa los paréntesis y conectores.', 'error'); return;
+            }
+
+            const func = new Function('p', 'q', 'r', 'return !!(' + jsExpr + ');');
+            const rows = 1 << vars.length; // 2^n
+            let html = `<table style="width:100%; text-align:center; border-collapse:collapse; margin-top:10px;">
+                        <tr style="background:var(--clr-primary); color:white;">`;
+            
+            vars.forEach(v => html += `<th style="padding:10px; border:1px solid rgba(255,255,255,0.2);">${v.toUpperCase()}</th>`);
+            html += `<th style="padding:10px; border:1px solid rgba(255,255,255,0.2); background:rgba(0,0,0,0.3);">Resultado</th></tr>`;
+
+            let trues = 0; let falses = 0;
+
+            for(let i = 0; i < rows; i++) {
+                // Generate truth values. Standard order: T T T, T T F, etc.
+                // We map 0 to True and 1 to False so standard truth table order is preserved if we loop 0 to rows-1.
+                // Actually, let's loop 0 to rows-1 where bit 1 is T and 0 is F, then reverse index to match standard T/F.
+                let p = vars.includes('p') ? !((i >> (vars.length - 1 - vars.indexOf('p'))) & 1) : false;
+                let q = vars.includes('q') ? !((i >> (vars.length - 1 - vars.indexOf('q'))) & 1) : false;
+                let r = vars.includes('r') ? !((i >> (vars.length - 1 - vars.indexOf('r'))) & 1) : false;
+
+                const res = func(p, q, r);
+                if(res) trues++; else falses++;
+
+                html += `<tr style="border:1px solid rgba(255,255,255,0.1);">`;
+                vars.forEach(v => {
+                    const val = (v==='p'?p : v==='q'?q : r);
+                    html += `<td style="padding:8px; border:1px solid rgba(255,255,255,0.1); color:${val?'#00f5d4':'#ef233c'}">${val?'V':'F'}</td>`;
+                });
+                html += `<td style="padding:8px; border:1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.2); font-weight:bold; color:${res?'#00f5d4':'#ef233c'}">${res?'V':'F'}</td>`;
+                html += `</tr>`;
+            }
+            html += `</table>`;
+
+            let conclusion = "Contingencia (Valores Verdaderos y Falsos)";
+            if(trues === rows) conclusion = "Tautología (Siempre Verdadero)";
+            if(falses === rows) conclusion = "Contradicción (Siempre Falso)";
+
+            html += `<div style="margin-top:15px; font-size:1.2rem; font-weight:bold; color:var(--clr-accent);">${conclusion}</div>`;
+
+            showResult('logic-result', html, 'success');
+        }
+
     </script>
 </body>
 </html>

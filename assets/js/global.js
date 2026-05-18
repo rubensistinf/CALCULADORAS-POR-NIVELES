@@ -7,8 +7,8 @@ function injectFloatingManual() {
     const btn = document.createElement('a');
     btn.href = '../6. manual/index.html'; // Adjust relative path dynamically if needed
     
-    let path = window.location.pathname;
-    if (path.includes('/Nivel') || path.includes('/manual') || path.includes('Todos los Niveles')) {
+    let path = window.location.pathname.toLowerCase();
+    if (path.includes('/nivel') || path.includes('/manual') || path.includes('todos los niveles')) {
         btn.href = '../6. manual/index.html';
     } else {
         btn.href = '6. manual/index.html';
@@ -56,6 +56,18 @@ function showResult(elementId, html, type = 'normal') {
 function hideResult(elementId) {
     const el = document.getElementById(elementId);
     if (el) el.style.display = 'none';
+}
+
+function clearSection(sectionId, resultId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.querySelectorAll('input').forEach(input => {
+            if (input.type === 'number' || input.type === 'text') {
+                input.value = '';
+            }
+        });
+    }
+    if (resultId) hideResult(resultId);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

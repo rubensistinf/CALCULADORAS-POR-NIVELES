@@ -44,8 +44,9 @@
     <main class="app-container glass-panel">
         <div class="tabs-container">
             <button class="tab-btn active" data-target="tab-cramer">Regla de Cramer (3x3)</button>
-            <button class="tab-btn" data-target="tab-mat">Operaciones Matrices (2x2)</button>
-            <button class="tab-btn" data-target="tab-stat">Estadística Descriptiva</button>
+            <button class="tab-btn" data-target="tab-matrices">Operaciones Matrices (2x2)</button>
+            <button class="tab-btn" data-target="tab-stats">Estadística Descriptiva</button>
+            <button class="tab-btn" data-target="tab-geoana">Geometría Analítica</button>
         </div>
 
         <!-- Cramer 3x3 -->
@@ -78,7 +79,7 @@
         </section>
 
         <!-- Operaciones Matrices 2x2 -->
-        <section id="tab-mat" class="tab-content">
+        <section id="tab-matrices" class="tab-content">
             <p class="helper-text">Operaciones elementales entre dos matrices 2x2</p>
             <div class="matrix-wrapper">
                 <div style="text-align:center;">
@@ -115,26 +116,69 @@
         </section>
 
         <!-- Estadística -->
-        <section id="tab-stat" class="tab-content">
+        <section id="tab-stats" class="tab-content">
             <p class="helper-text">Calculadora Estadística Multifuncional</p>
             <div class="input-group">
                 <label>Ingresa el conjunto de datos (separados por comas):</label>
                 <input type="text" id="stat-data" class="input-field" placeholder="Ej: 12.5, 45, 8, 3, 45, 12.5">
             </div>
             <button class="btn-primary" onclick="solveStats()"><i class="fa-solid fa-bolt"></i> Analizar Datos</button>
-            <div id="stat-result"></div>
+            <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearSection('tab-stats', 'stats-result')">Limpiar Datos</button>
+            <div id="stats-result"></div>
+        </section>
+
+        <!-- Geometría Analítica -->
+        <section id="tab-geoana" class="tab-content">
+            <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--clr-border);">
+                <div class="input-group">
+                    <label style="color: var(--clr-primary); font-size: 1rem;"><i class="fa-solid fa-shapes"></i> ¿Qué deseas calcular?</label>
+                    <select id="geoana-type" class="input-field" style="font-size: 1.1rem; font-weight: bold;" onchange="updateGeoAnaUI()">
+                        <option value="dist">Distancia y Punto Medio (2 Puntos)</option>
+                        <option value="circle">Ecuación de la Circunferencia (Centro y Radio)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Distancia -->
+            <div id="grp-ga-dist">
+                <p class="helper-text">Ingresa las coordenadas de los dos puntos P₁(x₁, y₁) y P₂(x₂, y₂).</p>
+                <div class="grid-2">
+                    <div class="input-group"><label>x₁:</label><input type="number" id="ga-x1" class="input-field" step="any"></div>
+                    <div class="input-group"><label>y₁:</label><input type="number" id="ga-y1" class="input-field" step="any"></div>
+                    <div class="input-group"><label>x₂:</label><input type="number" id="ga-x2" class="input-field" step="any"></div>
+                    <div class="input-group"><label>y₂:</label><input type="number" id="ga-y2" class="input-field" step="any"></div>
+                </div>
+            </div>
+
+            <!-- Circunferencia -->
+            <div id="grp-ga-circle" style="display:none;">
+                <p class="helper-text">Ingresa el Centro C(h, k) y el Radio (r).</p>
+                <div class="grid-2">
+                    <div class="input-group"><label>Centro h (x):</label><input type="number" id="ga-h" class="input-field" step="any"></div>
+                    <div class="input-group"><label>Centro k (y):</label><input type="number" id="ga-k" class="input-field" step="any"></div>
+                    <div class="input-group" style="grid-column: 1 / -1;"><label>Radio (r):</label><input type="number" id="ga-r" class="input-field" step="any" min="0.0001"></div>
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="solveGeoAna()"><i class="fa-solid fa-calculator"></i> Calcular</button>
+            <button class="btn-primary" style="background:rgba(255,255,255,0.1); margin-top:10px;" onclick="clearSection('tab-geoana', 'geoana-result')">Limpiar Datos</button>
+            <div id="geoana-result"></div>
         </section>
 
     </main>
 
     <script src="../assets/js/global.js"></script>
     <script>
-        function getVal(id) { const val = document.getElementById(id).value; return val === "" ? 0 : parseFloat(val); }
+        function getVal(id) { const val = document.getElementById(id).value; return val === "" ? null : parseFloat(val); }
         function clearInputs(containerId) {
             const container = document.getElementById(containerId);
             if(container) container.querySelectorAll('input').forEach(i => i.value = '');
-            document.querySelectorAll('.result-box').forEach(r => r.style.display = 'none');
         }
+        function clearSection(tabId, resId) {
+            document.querySelector(`#${tabId} input[type="text"], #${tabId} input[type="number"]`).value = '';
+            document.getElementById(resId).innerHTML = '';
+        }
+        function hideResult(id) { document.getElementById(id).innerHTML = ''; }
 
         // --- CRAMER 3x3 ---
         function det3x3(m) {
@@ -153,7 +197,7 @@
             const D = det3x3([[m[0][0], m[0][1], m[0][2]], [m[1][0], m[1][1], m[1][2]], [m[2][0], m[2][1], m[2][2]]]);
             
             if (D === 0) {
-                showResult('cramer-result', '<strong>El determinante principal es 0.</strong> El sistema no tiene solución única (es inconsistente o dependiente).', 'error');
+                showResult('cramer-result', '<strong>El determinante principal es 0.</strong> El sistema no tiene solución única.', 'error');
                 return;
             }
 
@@ -222,46 +266,104 @@
         // --- ESTADÍSTICA MULTIFUNCIONAL ---
         function solveStats() {
             const raw = document.getElementById('stat-data').value;
-            if(!raw.trim()) { showResult('stat-result', 'Error: Ingresa datos.', 'error'); return; }
+            if(!raw.trim()) { showResult('stats-result', 'Error: Ingresa datos.', 'error'); return; }
             
             const arr = raw.split(',').map(s => parseFloat(s.trim())).filter(n => !isNaN(n));
-            if(arr.length === 0) { showResult('stat-result', 'Error: No se encontraron números válidos.', 'error'); return; }
+            if(arr.length === 0) { showResult('stats-result', 'Error: No se encontraron números válidos.', 'error'); return; }
 
             arr.sort((a,b) => a - b);
             const n = arr.length;
+            const mean = arr.reduce((a,b)=>a+b, 0) / n;
+            let median = (n % 2 === 0) ? (arr[n/2 - 1] + arr[n/2]) / 2 : arr[Math.floor(n/2)];
             
-            // Media
-            const sum = arr.reduce((a,b)=>a+b, 0);
-            const mean = sum / n;
-            
-            // Mediana
-            let median;
-            if(n % 2 === 0) median = (arr[n/2 - 1] + arr[n/2]) / 2;
-            else median = arr[Math.floor(n/2)];
-            
-            // Moda
-            const counts = {};
-            let maxCount = 0;
+            const counts = {}; let maxCount = 0;
             arr.forEach(val => { counts[val] = (counts[val]||0)+1; if(counts[val]>maxCount) maxCount=counts[val]; });
             const modes = Object.keys(counts).filter(k => counts[k] === maxCount);
-            const modeText = modes.length === arr.length ? "No hay (todos únicos)" : modes.join(', ');
+            const modeStr = modes.length === arr.length ? "No hay" : modes.join(', ');
 
-            // Varianza & Desviación Estándar (Muestral)
             const sumSq = arr.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0);
             const variance = n > 1 ? sumSq / (n - 1) : 0;
             const stdDev = Math.sqrt(variance);
+            const min = arr[0], max = arr[n-1], range = max - min;
 
-            const html = `<div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                <div><strong>N° de Datos (n):</strong> ${n}</div>
-                <div><strong>Suma (Σx):</strong> ${sum.toFixed(2)}</div>
-                <div><strong>Media (x̄):</strong> ${mean.toFixed(4)}</div>
-                <div><strong>Mediana:</strong> ${median.toFixed(4)}</div>
-                <div><strong>Moda:</strong> ${modeText}</div>
-                <div><strong>Rango:</strong> ${(arr[n-1] - arr[0]).toFixed(4)}</div>
-                <div><strong>Varianza (s²):</strong> ${variance.toFixed(4)}</div>
-                <div><strong>Desviación Est. (s):</strong> ${stdDev.toFixed(4)}</div>
-            </div>`;
-            showResult('stat-result', html, 'success');
+            const html = `
+                <div class="grid-2" style="gap:15px; text-align:left;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Total Datos (n):</strong> ${n}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Media (x̄):</strong> ${mean.toFixed(4)}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Mediana:</strong> ${median}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Moda:</strong> ${modeStr}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Varianza (s²):</strong> ${variance.toFixed(4)}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Desviación Estándar (s):</strong> ${stdDev.toFixed(4)}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Mínimo:</strong> ${min}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Máximo:</strong> ${max}</div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px;"><strong>Rango:</strong> ${range}</div>
+                </div>
+            `;
+            showResult('stats-result', html, 'success');
+        }
+
+        // --- Geometría Analítica ---
+        function updateGeoAnaUI() {
+            const type = document.getElementById('geoana-type').value;
+            document.getElementById('grp-ga-dist').style.display = type === 'dist' ? 'block' : 'none';
+            document.getElementById('grp-ga-circle').style.display = type === 'circle' ? 'block' : 'none';
+            hideResult('geoana-result');
+        }
+
+        function solveGeoAna() {
+            const type = document.getElementById('geoana-type').value;
+            
+            if (type === 'dist') {
+                const x1 = getVal('ga-x1'); const y1 = getVal('ga-y1');
+                const x2 = getVal('ga-x2'); const y2 = getVal('ga-y2');
+                
+                if ([x1, y1, x2, y2].includes(null)) {
+                    showResult('geoana-result', 'Por favor, ingresa las coordenadas completas de ambos puntos.', 'error'); return;
+                }
+                
+                const dist = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                const mx = (x1 + x2) / 2;
+                const my = (y1 + y2) / 2;
+                
+                const html = `
+                    <div style="font-size:1.1rem; line-height: 1.8;">
+                        Distancia d(P₁, P₂) = <span style="color:var(--clr-accent); font-weight:bold; font-size:1.5rem;">${dist.toFixed(4)}</span><br>
+                        Punto Medio M = <strong style="color:var(--clr-primary);">( ${mx.toFixed(4)} , ${my.toFixed(4)} )</strong>
+                    </div>
+                `;
+                showResult('geoana-result', html, 'success');
+                
+            } else if (type === 'circle') {
+                const h = getVal('ga-h'); const k = getVal('ga-k'); const r = getVal('ga-r');
+                
+                if ([h, k, r].includes(null)) {
+                    showResult('geoana-result', 'Ingresa el Centro y el Radio.', 'error'); return;
+                }
+                if (r <= 0) {
+                    showResult('geoana-result', 'El radio debe ser mayor a 0.', 'error'); return;
+                }
+                
+                // Ecuación General: x² + y² + Dx + Ey + F = 0
+                const D = -2 * h;
+                const E = -2 * k;
+                const F = Math.pow(h, 2) + Math.pow(k, 2) - Math.pow(r, 2);
+                
+                const opD = D >= 0 ? '+ ' + D.toFixed(2) : '- ' + Math.abs(D).toFixed(2);
+                const opE = E >= 0 ? '+ ' + E.toFixed(2) : '- ' + Math.abs(E).toFixed(2);
+                const opF = F >= 0 ? '+ ' + F.toFixed(2) : '- ' + Math.abs(F).toFixed(2);
+                const opH = h >= 0 ? '- ' + h.toFixed(2) : '+ ' + Math.abs(h).toFixed(2);
+                const opK = k >= 0 ? '- ' + k.toFixed(2) : '+ ' + Math.abs(k).toFixed(2);
+                
+                const html = `
+                    <div style="font-size:1.1rem; line-height: 1.8;">
+                        <strong>Ecuación Canónica (Ordinaria):</strong><br>
+                        (x ${opH})² + (y ${opK})² = ${(r*r).toFixed(4)}<br><br>
+                        <strong>Ecuación General:</strong><br>
+                        x² + y² ${opD}x ${opE}y ${opF} = 0
+                    </div>
+                `;
+                showResult('geoana-result', html, 'success');
+            }
         }
     </script>
 </body>
